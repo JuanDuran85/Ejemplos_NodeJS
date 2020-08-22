@@ -6,10 +6,13 @@ const sqlite3 = require('sqlite3');
 const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 
-const sequelize = new Sequelize('bdEjemplo',null,null,{
+/* const sequelize = new Sequelize('bdEjemplo',null,null,{
     dialect: 'sqlite',
     storage: './db/bdEjemplo.sqlite3'
-});
+}); */
+
+app.use('view engine','pug');
+
 
 app.post('/datos',(req,res)=>{
 
