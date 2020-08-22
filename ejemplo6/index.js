@@ -7,7 +7,8 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 
 const sequelize = new Sequelize('bdEjemplo',null,null,{
-    dialect: 'sqlite'
+    dialect: 'sqlite',
+    storage: './db/bdEjemplo.sqlite3'
 });
 
 app.post('/datos',(req,res)=>{
