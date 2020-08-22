@@ -5,3 +5,4 @@
 3. Ejemplo básico 3 - Servidor con ExpressJS (archivos)
 4. Ejemplo básico 4 - Servidor con ExpressJS (Cookies y sesiones)
 5. Ejemplo básico 5 - Trabajando con Base de datos SQLite3 y ORM
+6. Ejemplo básico 6 - Proyecto con MVC
