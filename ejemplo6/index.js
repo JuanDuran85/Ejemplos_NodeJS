@@ -2,11 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
 const sqlite3 = require('sqlite3');
-const tarreas = require('./controllers/tarreas');
+//const tarreas = require('./controllers/tarreas');
+const tareasRoute = require('./routes/tareas_rutas');
 
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(tareasRoute);
 
 /* const sequelize = new Sequelize('bdEjemplo',null,null,{
     dialect: 'sqlite',
@@ -15,12 +17,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.set('view engine','pug');
 
-app.get('/tareas', tarreas.home);
+/* app.get('/tareas', tarreas.home);
 
 app.post('/datos',(req,res)=>{
 
     res.send("Enviados...");
-});
+}); */
 
 app.listen(8080);
 console.log("Servidor activo");
