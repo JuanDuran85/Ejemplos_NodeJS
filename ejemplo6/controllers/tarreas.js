@@ -13,6 +13,11 @@ module.exports = {
             res.render('tarreas/show',{tarea: response});
         });
     },
+    edit: function (req, res) {
+        Tarrea.findByPk(req.params.id).then(response=>{
+            res.render('tarreas/edit',{tarea: response});
+        });        
+    },
     update: function (req,res) {
         Tarrea.update({descripcion: req.body.descripcion},{
             where: {
