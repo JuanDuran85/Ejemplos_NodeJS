@@ -18,13 +18,15 @@ module.exports = {
             where: {
                 id: req.params.id
             }
+        }).then(response=>{
+            res.redirect('/tareas/'+req.params.id);
         })
     },
     create: function(req,res){
         Tarrea.create({
             descripcion: req.body.descripcion
         }).then(resultado=>{
-            res.json(resultado);
+            res.redirect('/tareas')
         }).catch(err=>{
             console.log(err);
             res.json(err);

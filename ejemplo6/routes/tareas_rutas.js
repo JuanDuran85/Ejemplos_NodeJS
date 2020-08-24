@@ -7,6 +7,6 @@ router.route('/tareas').get(TarreasControlador.index).post(TarreasControlador.cr
 router.get('/tareas/nueva',TarreasControlador.nueva);
 /* router.get('/tareas/index',TarreasControlador.home); */
 
-router.route('/tareas/:id').get(TarreasControlador.show);
+router.route('/tareas/:id').get(TarreasControlador.show).put(TarreasControlador.update);
 
 module.exports = router;
