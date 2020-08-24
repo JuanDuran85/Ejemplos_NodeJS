@@ -4,13 +4,13 @@ const Sequelize = require('sequelize');
 const sqlite3 = require('sqlite3');
 //const tarreas = require('./controllers/tarreas');
 const tareasRoute = require('./routes/tareas_rutas');
-const path = require('path');
+//const path = require('path');
 
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(tareasRoute);
-app.use(express.static(path.join(__dirname + './views')));
+//app.use(express.static(path.join(__dirname + './views')));
 
 /* const sequelize = new Sequelize('bdEjemplo',null,null,{
     dialect: 'sqlite',

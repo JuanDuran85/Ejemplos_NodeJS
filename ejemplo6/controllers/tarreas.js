@@ -1,6 +1,25 @@
 const Tarrea = require('../models').Tarrea;
 
 module.exports = {
+    index: function (req, res) {
+        Tarrea.findAll().then(response => {
+            res.render('tarreas/index', {
+                tareas : response
+            })
+        })
+    },
+    show: function (req,res) {
+        Tarrea.findByPk(req.params.id).then(response=>{
+            res.render('tarreas/show',{tarea: response});
+        });
+    },
+    update: function (req,res) {
+        Tarrea.update({descripcion: req.body.descripcion},{
+            where: {
+                id: req.params.id
+            }
+        })
+    },
     create: function(req,res){
         Tarrea.create({
             descripcion: req.body.descripcion
@@ -14,11 +33,11 @@ module.exports = {
     nueva: function (req,res){
         res.render('tarreas/nueva');
     },
-    home: function (req,res) {
+/*     home: function (req,res) {
         Tarrea.findAll().then((datos)=>{
             res.render('tarreas/index',{
                 tareas: datos
             });
         })
-    }
+    } */
 }
