@@ -8,3 +8,5 @@ html(lang="en")
         h2 Mostrando elemento #{tarea.id}
         h3 Descripcion: #{tarea.descripcion}
         p Fecha de Creación:  #{tarea.createdAt}
+        form(action=`/tareas/${tarea.id}?_method=DELETE`, method="post")
+            input(type="submit", value="Eliminar")

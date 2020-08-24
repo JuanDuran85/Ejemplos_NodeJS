@@ -9,6 +9,9 @@ router.get('/tareas/nueva',TarreasControlador.nueva);
 
 router.get('/tareas/:id/edit',TarreasControlador.edit)
 
-router.route('/tareas/:id').get(TarreasControlador.show).put(TarreasControlador.update);
+router.route('/tareas/:id')
+    .get(TarreasControlador.show)
+    .put(TarreasControlador.update)
+    .delete(TarreasControlador.borrar);
 
 module.exports = router;

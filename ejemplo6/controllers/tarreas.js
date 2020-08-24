@@ -18,6 +18,16 @@ module.exports = {
             res.render('tarreas/edit',{tarea: response});
         });        
     },
+    borrar: function (req,res) {
+      Tarrea.destroy({
+          where: {
+              id: req.params.id
+          }
+      }).then(response=>{
+          res.redirect('/tareas');
+          console.log(response);
+      })  
+    },
     update: function (req,res) {
         Tarrea.update({descripcion: req.body.descripcion},{
             where: {
@@ -25,13 +35,14 @@ module.exports = {
             }
         }).then(response=>{
             res.redirect('/tareas/'+req.params.id);
+            console.log(response);
         })
     },
     create: function(req,res){
         Tarrea.create({
             descripcion: req.body.descripcion
         }).then(resultado=>{
-            res.redirect('/tareas')
+            res.redirect('/tareas');
         }).catch(err=>{
             console.log(err);
             res.json(err);
