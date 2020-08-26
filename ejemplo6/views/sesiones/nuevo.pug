@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Ingresar al Sistema
+    body
+        h3 Iniciar Sesión de Usuario
+        form(action="/sesiones",method="post")
+            label(for="email") Correo Electrónico:
+            input(type="email", name="email", placeholder="Ingrese el correo electrónico")
+            br
+            label(for="clave") Ingrese la clave:
+            input(type="password", name="password", placeholder="Ingrese la clave")
+            br
+            input(type="submit", value="Iniciar Sesión")

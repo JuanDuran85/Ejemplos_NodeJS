@@ -5,6 +5,7 @@ const sqlite3 = require('sqlite3');
 //const tarreas = require('./controllers/tarreas');
 const tareasRoute = require('./routes/tareas_rutas');
 const registroRoute = require('./routes/registro_rutas');
+const sesionesRoute = require('./routes/sesiones_rutas');
 const methodOverride = require('method-override');
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 app.use(tareasRoute);
 app.use(registroRoute);
+app.use(sesionesRoute);
 
 /* const sequelize = new Sequelize('bdEjemplo',null,null,{
     dialect: 'sqlite',

@@ -30,10 +30,40 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Usuarios',
   });
-  Usuarios.beforeCreate(async function(user, options) {
-    console.log("desde beforecreate");
+  Usuarios.login = function (email,passwod){
+    return Usuarios.findOne({
+      where: {
+        email
+      }
+    }).then(user => {
+       //comparando el password con el guardado
+       if (user) {
+         let resultado = user.autentificacionUsuario(passwod);
+         if (resultado){
+           return resultado;
+         } else {
+           return null
+         }
+       } else {
+         return null;
+       }
+    })
+  };
+
+  Usuarios.prototype.autentificacionUsuario = async function (passwod) {
     try {
-        console.log("Entrando a try")
+      let match = await bcrypt.compare(passwod, this.passwod_hash);
+      if (match) {
+        console.log(match);
+        return match;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  Usuarios.beforeCreate(async function(user, options) {
+    try {
         if (user.passwod) {
           console.log("si hay clave")
           let resultado = await bcrypt.hash(user.passwod,10);
