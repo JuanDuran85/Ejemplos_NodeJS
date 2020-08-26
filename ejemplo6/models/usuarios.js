@@ -4,14 +4,7 @@ const {Model} = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Usuarios extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
+    static associate(models) {}
   };
   Usuarios.init({
     email: {
@@ -38,28 +31,29 @@ module.exports = (sequelize, DataTypes) => {
     }).then(user => {
        //comparando el password con el guardado
        if (user) {
-         let resultado = user.autentificacionUsuario(passwod);
-         if (resultado){
-           return resultado;
-         } else {
-           return null
-         }
+         return user.autentificacionUsuario(passwod).then(resultado => {
+          if (resultado){
+            return user;
+          } else {
+            return null
+          }
+         });
        } else {
          return null;
        }
     })
   };
 
-  Usuarios.prototype.autentificacionUsuario = async function (passwod) {
-    try {
-      let match = await bcrypt.compare(passwod, this.passwod_hash);
-      if (match) {
-        console.log(match);
-        return match;
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  Usuarios.prototype.autentificacionUsuario = function (passwod) {
+    return new Promise((res,rej) => {
+      bcrypt.compare(passwod, this.passwod_hash, function (err,result) {
+        if (err){
+          return rej(err);
+        }else{
+          res(result);
+        }
+      });
+    })
   }
 
   Usuarios.beforeCreate(async function(user, options) {
