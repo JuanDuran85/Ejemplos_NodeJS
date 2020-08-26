@@ -7,6 +7,7 @@ const tareasRoute = require('./routes/tareas_rutas');
 const registroRoute = require('./routes/registro_rutas');
 const sesionesRoute = require('./routes/sesiones_rutas');
 const methodOverride = require('method-override');
+const session = require('express-session')
 
 const app = express();
 
@@ -15,13 +16,17 @@ app.use(methodOverride('_method'));
 app.use(tareasRoute);
 app.use(registroRoute);
 app.use(sesionesRoute);
+app.set('view engine','pug');
+app.use(session({
+    secret: ['retgouih56likjsfdg245lksjfdg234', '´poipoi534pok31nbdjlk428953lwu9'],
+    saveUninitialized: false,
+    resave: false
+}));
 
 /* const sequelize = new Sequelize('bdEjemplo',null,null,{
     dialect: 'sqlite',
     storage: './db/bdEjemplo.sqlite3'
 }); */
-
-app.set('view engine','pug');
 
 /* app.get('/tareas', tarreas.home);
 
