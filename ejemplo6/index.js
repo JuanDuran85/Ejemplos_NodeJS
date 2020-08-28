@@ -7,7 +7,8 @@ const tareasRoute = require('./routes/tareas_rutas');
 const registroRoute = require('./routes/registro_rutas');
 const sesionesRoute = require('./routes/sesiones_rutas');
 const methodOverride = require('method-override');
-const session = require('express-session')
+const session = require('express-session');
+const buscarUsuario = require('./middleware/encontrar_usuario');
 
 const app = express();
 
@@ -22,6 +23,11 @@ app.use(session({
     saveUninitialized: false,
     resave: false
 }));
+app.use(buscarUsuario);
+
+app.get('/', (req,res)=>{
+    res.render('index',{usuario: req.user})
+})
 
 /* const sequelize = new Sequelize('bdEjemplo',null,null,{
     dialect: 'sqlite',
