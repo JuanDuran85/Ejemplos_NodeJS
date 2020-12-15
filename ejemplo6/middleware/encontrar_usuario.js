@@ -1,9 +1,13 @@
 const Usuarios = require('../models').Usuarios;
 
 module.exports = function (req,res,next) {
-    if (req.session.userId){
-        Usuarios.findById(req.session.userId).then(usuario =>{
-            console.log(usuario);
+    if (req.sessionID){
+        console.log("req.sessionID")
+        console.log(req.sessionID);
+        
+        Usuarios.findByPk(req.sessionID).then(usuario =>{
+            console.log("usuario encontrado con findByPk")
+            console.log(usuario)
             if (usuario){
                 req.user = usuario;
                 next();

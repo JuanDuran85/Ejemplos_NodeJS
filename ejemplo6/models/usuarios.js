@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   Usuarios.login = function (email,passwod){
     return Usuarios.findOne({
       where: {
-        email
+        email: email
       }
     }).then(user => {
        //comparando el password con el guardado
