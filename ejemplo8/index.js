@@ -3,16 +3,20 @@ let app = express(); //
 let pieRepo = require('./repos/pieRepo');
 
 let router = express.Router(); // rutas de express para dejar activa
-let pies = pieRepo.get();
+/* let pies = pieRepo.get(); */
 
 router.get('/',(req,res,next)=>{ // creando get para retornar un valor
 /*     res.status(200).send(pies); */
-    res.status(200).json({
-        "status": 200,
-        "statusText": "Ok",
-        "message":"All data retrieved",
-        "data": pies
-    });
+    pieRepo.get(function(data){
+        res.status(200).json({
+            "status": 200,
+            "statusText": "Ok",
+            "message":"All data retrieved",
+            "data": data
+        });
+    }, function(err){
+        next(err);
+    })
 });
 
 app.use('/api/', router); // agregando ruta
