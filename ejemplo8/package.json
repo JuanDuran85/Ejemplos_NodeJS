@@ -1,0 +1,21 @@
+{
+  "name": "ejemplo8",
+  "version": "1.0.0",
+  "description": "Primera API con Node y Express",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "API",
+    "Node",
+    "Express"
+  ],
+  "author": "JuanDuran85",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.6"
+  }
+}
