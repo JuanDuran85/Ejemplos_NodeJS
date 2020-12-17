@@ -5,7 +5,7 @@
         "wholePrice": 15,
         "slicePrice": 3,
         "sliceCalories": 200,
-        "imageUrl": "images/superApple.jpg"
+        "imageUrl": "https://picsum.photos/200/300"
     },
     {
         "id": 2,
@@ -13,7 +13,7 @@
         "wholePrice": 19.99,
         "slicePrice": 4.99,
         "sliceCalories": 71,
-        "imageUrl": "images/cherry.jpg"
+        "imageUrl": "https://picsum.photos/200/300"
     },
     {
         "id": 3,
@@ -21,7 +21,7 @@
         "wholePrice": 21.99,
         "slicePrice": 5.49,
         "sliceCalories": 66,
-        "imageUrl": "images/peach.jpg"
+        "imageUrl": "https://picsum.photos/200/300"
     },
     {
         "id": 4,
@@ -29,7 +29,7 @@
         "wholePrice": 20.99,
         "slicePrice": 5.29,
         "sliceCalories": 69,
-        "imageUrl": "images/strawberry.jpg"
+        "imageUrl": "https://picsum.photos/200/300"
     },
     {
         "id": 5,
@@ -37,7 +37,7 @@
         "wholePrice": 22.99,
         "slicePrice": 5.99,
         "sliceCalories": 73,
-        "imageUrl": "images/bosenberry.jpg"
+        "imageUrl": "https://picsum.photos/200/300"
     },
     {
         "id": 6,
@@ -45,6 +45,6 @@
         "wholePrice": 22.99,
         "slicePrice": 5.99,
         "sliceCalories": 67,
-        "imageUrl": "images/pecan.jpg"
+        "imageUrl": "https://picsum.photos/200/300"
     }
 ]

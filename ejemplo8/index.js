@@ -2,11 +2,16 @@ let express = require('express'); // llamando a express en la libreria
 let app = express(); // 
 let pieRepo = require('./repos/pieRepo');
 let errorHelper = require('./helpers/errorHelpers');
+let cors = require('cors');
 
 let router = express.Router(); // rutas de express para dejar activa
 /* let pies = pieRepo.get(); */
 
 app.use(express.json());
+
+// configurando cors
+app.use(cors());
+
 
 router.get('/',function(req,res,next){ // creando get para retornar un valor
 /*     res.status(200).send(pies); */
