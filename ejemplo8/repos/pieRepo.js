@@ -36,7 +36,65 @@ let pieRepo = {
                 resolve(pies);
             }
         })
-    }
+    },
+    insert: function (newData, resolve, reject) { 
+        fs.readFile(FILE_NAME,function (err,data) {  
+            if(err){
+                reject(err);
+            } else {
+                let pies = JSON.parse(data);
+                pies.push(newData);
+                fs.writeFile(FILE_NAME, JSON.stringify(pies), function (err) {  
+                    if (err){
+                        reject(err);
+                    } else {
+                        resolve(newData);
+                    }
+                })
+            }
+        })
+    },
+    updated: function (newData, id, resolve, reject) {
+        fs.readFile(FILE_NAME,function(error, data){
+            if(error){
+                reject(error);
+            } else {
+                let pies = JSON.parse(data);
+                let pie = pies.find(res => res.id == id);
+                if(pie){
+                    Object.assign(pie,newData);
+                    fs.writeFile(FILE_NAME, JSON.stringify(pies), function (error) {  
+                        if(error){
+                            reject(error);
+                        } else {
+                            resolve(newData);
+                        }
+                    })
+                }
+            }
+        });
+    },
+    delete: function (id, resolve, reject) {
+        fs.readFile(FILE_NAME, function (error,data) {  
+            if(error){
+                reject(error);
+            } else {
+                let pies = JSON.parse(data);
+                let index = pies.findIndex(res => res.id == id);
+                if (index != -1) {
+                    pies.splice(index,1);
+                    fs.writeFile(FILE_NAME, JSON.stringify(pies), function (error) {  
+                        if (error){
+                            reject(error);
+                        } else {
+                            resolve(index);
+                        }
+                    })
+                }
+            }
+        })
+    },
+    
 };
 
 module.exports = pieRepo;

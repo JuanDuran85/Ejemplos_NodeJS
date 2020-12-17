@@ -5,6 +5,8 @@ let pieRepo = require('./repos/pieRepo');
 let router = express.Router(); // rutas de express para dejar activa
 /* let pies = pieRepo.get(); */
 
+app.use(express.json());
+
 router.get('/',function(req,res,next){ // creando get para retornar un valor
 /*     res.status(200).send(pies); */
     pieRepo.get(function(data){
@@ -61,7 +63,112 @@ router.get('/:id',function (req,res,next){
     });
 });
 
+router.post('/', function (req, res, next) {  
+    pieRepo.insert(req.body, function (data) {  
+        res.status(200).json({
+            "status" : 201,
+            "statusText" : "Created",
+            "message": "New Data Added.",
+            "data" : data
+        });
+    }, 
+    function (error) { 
+        next(error) 
+    });
+});
+
+router.put('/:id', function (req, res, next) {
+    pieRepo.getById(req.params.id, function (data) {  
+        if (data) {
+            pieRepo.updated(req.body, req.params.id , function(data){
+                res.status(200).json({
+                    "status": 200,
+                    "statusText": "Ok",
+                    "message":"Single data '"+req.params.id+"' updated",
+                    "data": data 
+                });
+            });
+        } else {
+            res.status(404).json({
+                "status": 404,
+                "statusText": "Not Found",
+                "message":"The data '"+req.params.id+"' could not be found",
+                "error": {
+                    "code": "NOT_FOUND",
+                    "message": "The data '"+req.params.id+"' could not be found"
+                }
+            })
+        }
+    }, function (error) { next(error) });
+});
+
+router.delete('/:id', function (req,res, next) {  
+    pieRepo.getById(req.params.id, function(data){
+        if (data){
+            pieRepo.delete(req.params.id, function(data){
+                res.status(200).json({
+                    "status": 200,
+                    "statusText": "Ok",
+                    "message":"Single data '"+req.params.id+"' deleted",
+                    "data": "Single data '"+req.params.id+"' deleted"
+                }); 
+            })
+        } else {
+            res.status(404).json({
+                "status": 404,
+                "statusText": "Not Found",
+                "message":"The data '"+req.params.id+"' could not be found",
+                "error": {
+                    "code": "NOT_FOUND",
+                    "message": "The data '"+req.params.id+"' could not be found"
+                }
+            })
+        }
+    }, function (error) { 
+        next(error);
+    })
+});
+
+router.patch('/:id', function (req, res, next) {  
+    pieRepo.getById(req.params.id, function (data) {  
+        if (data) {
+            pieRepo.updated(req.body,req.params.id,function (data) {  
+                res.status(200).json({
+                    "status": 200,
+                    "statusText": "Ok",
+                    "message":"Single data '"+req.params.id+"' updated",
+                    "data": data 
+                });
+            });
+        } else {
+            res.status(404).json({
+                "status": 404,
+                "statusText": "Not Found",
+                "message":"The data '"+req.params.id+"' could not be found",
+                "error": {
+                    "code": "NOT_FOUND",
+                    "message": "The data '"+req.params.id+"' could not be found"
+                }
+            })
+        }
+    },function (error) {  
+        next(error);
+    });
+});
+
 app.use('/api/', router); // agregando ruta
+
+app.use(function (err,req,res,next) {  
+    res.status(500).json({
+        "status": 500,
+        "statusText": "Internal Sever Error",
+        "message":err.message,
+        "error": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "message": err.message
+        }
+    })
+});
 
 var server = app.listen(3000, ()=>{
     console.log("Servidor activo...");
