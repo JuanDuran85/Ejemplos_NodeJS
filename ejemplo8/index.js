@@ -1,6 +1,7 @@
 let express = require('express'); // llamando a express en la libreria
 let app = express(); // 
 let pieRepo = require('./repos/pieRepo');
+let errorHelper = require('./helpers/errorHelpers');
 
 let router = express.Router(); // rutas de express para dejar activa
 /* let pies = pieRepo.get(); */
@@ -158,17 +159,10 @@ router.patch('/:id', function (req, res, next) {
 
 app.use('/api/', router); // agregando ruta
 
-app.use(function (err,req,res,next) {  
-    res.status(500).json({
-        "status": 500,
-        "statusText": "Internal Sever Error",
-        "message":err.message,
-        "error": {
-            "code": "INTERNAL_SERVER_ERROR",
-            "message": err.message
-        }
-    })
-});
+app.use(errorHelper.logErrorsToConsole);
+app.use(errorHelper.logErrorsToFile);
+app.use(errorHelper.clientErrorHandler);
+app.use(errorHelper.errorHandler);
 
 var server = app.listen(3000, ()=>{
     console.log("Servidor activo...");
