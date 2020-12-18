@@ -1,0 +1,48 @@
+extends layout
+
+block content
+  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+    .container-fluid
+      a.navbar-brand(href='#') Navbar
+      button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+      #navbarSupportedContent.collapse.navbar-collapse
+        ul.navbar-nav.me-auto.mb-2.mb-lg-0
+          li.nav-item
+            a.nav-link.active(aria-current='page' href='#') Home
+          li.nav-item
+            a.nav-link(href='#') Link
+          li.nav-item.dropdown
+            a#navbarDropdown.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
+              | Dropdown
+            ul.dropdown-menu(aria-labelledby='navbarDropdown')
+              li
+                a.dropdown-item(href='#') Action
+              li
+                a.dropdown-item(href='#') Another action
+              li
+                hr.dropdown-divider
+              li
+                a.dropdown-item(href='#') Something else here
+          li.nav-item
+            a.nav-link.disabled(href='#' tabindex='-1' aria-disabled='true') Disabled
+        form.d-flex
+          input.form-control.me-2(type='search' placeholder='Search' aria-label='Search')
+          button.btn.btn-outline-success(type='submit') Search
+  main.container
+    div.text-center.my-5
+      h1 #{title}
+      div
+        button#boton.btn.btn-primary(type='button') #{informacion}
+      div.my-5
+        div#resultados.row
+          each val in data
+            div.col-12.col-sm-12.col-md-6.col-lg-4.col-xl-12.my-3
+              div.card
+                img.card-img-top(src=val.imageUrl)
+                div.card-body
+                  h5.card-title #{val.name}
+                  p.card-text wholePrice: #{val.wholePrice} | slicePrice: #{val.slicePrice}
+                  a.btn.btn-primary(href='#') Go somewhere
+  footer.mt-5.p-3.fixed-bottom.bg-dark.text-white.text-center
+    p #{subtitle}
