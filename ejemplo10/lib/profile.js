@@ -1,6 +1,8 @@
 const { filter, getParams, merge } = require('./utils');
 const users = require('./users');
 
+const _ = require('lodash');
+
 function readProfile(req, res) {
     // Get search params
     const [field, value] = getParams(req.query, ['field', 'value']);
@@ -19,7 +21,8 @@ function saveProfile(req, res) {
     // Update the user object if needed
     if (user) {
         // Clone the data coming from request
-        const updatedUser = merge({}, req.body);
+        // const updatedUser = merge({}, req.body);
+        const updatedUser = _.merge({},req.body);
         Object.assign(user, updatedUser);
     }
     // Respond with the user object
