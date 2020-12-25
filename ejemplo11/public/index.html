@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <title>Archivos</title>
+    <title>Subida de Archivos</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -32,19 +32,23 @@
         </div>
     </nav>
     <main class="container my-5">
-        <section class="border border-dark p-5">
-            <form action="">
-                <div class="mb-3">
-                    <label for="formFile" class="form-label">Selecciona un archivo</label>
-                    <input class="form-control" type="file" id="formFile">
-                </div>
-                <button type="submit" class="btn btn-primary">Subir</button>
-            </form>
-        </section>
+      <header class="my-5">
+        <h2 class="text-center">Subiendo Archivos</h2>
+      </header>
+      <section class="border border-dark p-5">
+          <form action="/api/single-file" method="POST" enctype="multipart/form-data">
+              <div class="mb-3">
+                  <label for="formFile" class="form-label">Selecciona un archivo</label>
+                  <input class="form-control" type="file" id="myfile" name="myfile" accept="">
+              </div>
+              <button type="submit" class="btn btn-primary">Subir</button>
+          </form>
+      </section>
     </main>
     <footer class="p-3 bg-dark text-center text-white position-absolute bottom-0 end-0 w-100">
         <p>Footer de la página</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="./assets/js/main.js"></script>
 </body>
 </html>
