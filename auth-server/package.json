@@ -1,0 +1,19 @@
+{
+  "name": "auth-server",
+  "version": "1.0.0",
+  "description": "Servicio Back para aplicacion con Angular",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev":"nodemon index.js",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "Angular",
+    "Node",
+    "Express",
+    "Mongo"
+  ],
+  "author": "JuanDuran85",
+  "license": "ISC"
+}
