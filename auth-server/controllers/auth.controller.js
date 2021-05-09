@@ -95,20 +95,18 @@ const loginUser = async (req,res = response) => {
 }
 
 //controlador para validar y revalidar token
-const tokenValid = (req,res = response) => {
-    
-    const token = req.header('x-token');
-    
-    if(!token) {
-        return res.status(401).json({
-            ok: false,
-            msg: 'error...'
-        })
-    }
+const tokenValid = async (req,res = response) => {
+
+    const { uid , name } = req;
+
+    //generar el JWT
+    const token = await generateJwt(uid, name);
 
     return res.json({
         ok:true,
         msg:"Renew /",
+        name,
+        uid,
         token
     });
 }
