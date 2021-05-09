@@ -1,7 +1,7 @@
 const { response } = require('express');
 const  User = require('../models/User.model');
 const { generateJwt } = require('../helpers/jwt.helper');
-const bycript = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 
 //controlador para crear usuario
 const createUser = async (req,res = response) => {
@@ -21,12 +21,11 @@ const createUser = async (req,res = response) => {
         }
 
     // crear usario con el modelo (se crea la nueva instancia del modelo del usuario)
-
         const dbUser = new User(req.body);
 
     //encriptar o hash la contraseña
-        const salt = bycript.genSaltSync();
-        dbUser.password = bycript.hashSync( password , salt);
+        const salt = bcrypt.genSaltSync();
+        dbUser.password = bcrypt.hashSync( password , salt);
     //generar el JWT
         const token = await generateJwt(dbUser.id, name);
 
@@ -42,7 +41,6 @@ const createUser = async (req,res = response) => {
         })
         
     } catch (error) {
-        console.log(error);
         return res.json({
             ok  : false,
             msg : "Por favor, contacta al administrador..."
@@ -51,21 +49,67 @@ const createUser = async (req,res = response) => {
 };
 
 //controlador para login de usuario
-const loginUser = (req,res = response) => {
+const loginUser = async (req,res = response) => {
 
     const { email, password } = req.body;
 
-    return res.json({
-        ok:true,
-        msg:"login de usuario /"
-    });
+    try {
+        
+        //verificar si no existe un correo igual
+        const usuario = await User.findOne({ email });
+
+        if (!usuario) {
+            return res.status(400).json({ 
+                ok : false,
+                msg: 'Los datos no son correctos'
+            });
+        }
+
+        //confirmar si el password hace match
+        const validPassword = bcrypt.compareSync(password, usuario.password);
+
+        if (!validPassword){
+            return res.status(400).json({ 
+                ok : false,
+                msg: 'Los datos no son correctos'
+            }); 
+        }
+
+        //generar el JWT
+        const token = await generateJwt(usuario.id, usuario.name);
+
+        //respuesta del servicio (solo fines educativos)
+        return res.json({
+            ok: true,
+            uid: usuario.id,
+            name: usuario.name,
+            token
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            ok : false,
+            msg:"Por favor, contacta al administrador..."
+        });
+    }
 }
 
 //controlador para validar y revalidar token
 const tokenValid = (req,res = response) => {
+    
+    const token = req.header('x-token');
+    
+    if(!token) {
+        return res.status(401).json({
+            ok: false,
+            msg: 'error...'
+        })
+    }
+
     return res.json({
         ok:true,
-        msg:"Renew /"
+        msg:"Renew /",
+        token
     });
 }
 
