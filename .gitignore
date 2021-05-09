@@ -2,3 +2,5 @@ node_modules
 .env
 env
 auth-server/.env
+.env.local
+.env.*.local
