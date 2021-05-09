@@ -1,8 +1,3 @@
-node_modules
 .env
-env
+node_modules
 auth-server/.env
-.env.local
-.env.*.local
-auth-server/.env
-D:\Juan\codigos\ejemplos_ejercicios_cursos\Ejercicios_NodeJS\auth-server\.env
