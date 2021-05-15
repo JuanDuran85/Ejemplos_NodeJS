@@ -37,7 +37,8 @@ const createUser = async (req,res = response) => {
             ok: true,
             uid: dbUser.id,
             name,
-            token
+            token, 
+            email
         })
         
     } catch (error) {
@@ -83,7 +84,8 @@ const loginUser = async (req,res = response) => {
             ok: true,
             uid: usuario.id,
             name: usuario.name,
-            token
+            token,
+            email
         });
 
     } catch (error) {
@@ -96,17 +98,19 @@ const loginUser = async (req,res = response) => {
 
 //controlador para validar y revalidar token
 const tokenValid = async (req,res = response) => {
+    const { uid } = req;
 
-    const { uid , name } = req;
+    const usuario = await User.findById(uid);
 
     //generar el JWT
-    const token = await generateJwt(uid, name);
+    const token = await generateJwt(uid, usuario.name);
 
     return res.json({
         ok:true,
         msg:"Renew /",
-        name,
+        name: usuario.name,
         uid,
+        email: usuario.email,
         token
     });
 }
