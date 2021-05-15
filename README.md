@@ -9,3 +9,7 @@
 
 # Ejemplos_NodeJS
 Ejemplos básicos de NodeJS
+
+
+# Heroku
+heroku logs -n 1000 --tail -a=nombre_app
