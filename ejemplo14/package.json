@@ -1,0 +1,19 @@
+{
+  "name": "ejemplo14",
+  "version": "1.0.0",
+  "description": "Ejemplo interactivo con la consola",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "NodeJS"
+  ],
+  "author": "JuanDuran85",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "inquirer": "^8.1.0",
+    "uuid": "^8.3.2"
+  }
+}
