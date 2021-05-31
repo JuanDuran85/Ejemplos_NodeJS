@@ -39,7 +39,7 @@ class Tareas {
         const pendientes = this.listadoArr.filter(result => !result.completadoEnd);
         if (completadas) {
             completas.forEach((e,index) => {
-                console.log(`${colors.green(index+1)}. ${e.desc} :: ${e.completadoEnd}`);
+                console.log(`${colors.green(index+1)}. ${e.desc} :: ${colors.green(e.completadoEnd)}`);
             });
         } else {
             pendientes.forEach((e,index)=>{
@@ -53,6 +53,22 @@ class Tareas {
             delete this._listado[id];
         };
     };
+
+    toggleCompletadas(ids = []){
+        ids.forEach(id => {
+            const tarea = this._listado[id];
+            if (!tarea.completadoEnd){
+                tarea.completadoEnd = new Date().toISOString();
+            };
+        });
+
+        this.listadoArr.forEach(tarea => {
+            if (!ids.includes(tarea.id)){
+                const tareaEx = this._listado[tarea.id];
+                tareaEx.completadoEnd = null;
+            };
+        })
+    }
 }
 
 module.exports = Tareas;
