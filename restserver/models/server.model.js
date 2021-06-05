@@ -1,11 +1,15 @@
 const express = require('express');
 const cors = require('cors');
+const { dbConexion } = require('../database/config.database');
 
 class Server {
     constructor() {
         this.app = express();
         this.port = process.env.PORT || 3000;
         this.userPath = '/api/users';
+
+        // conectando a la Base de Datos
+        this.conexionDB();
         
         //Middlewares
         this.middlewares();
@@ -13,6 +17,10 @@ class Server {
         //Rutas de la aplicacion
         this.routes();
     };
+
+    async conexionDB(){
+        await dbConexion();
+    }
 
     middlewares(){
         //cors de proteccion
