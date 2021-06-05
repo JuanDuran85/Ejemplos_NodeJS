@@ -20,7 +20,7 @@ const UserSchema = Schema({
     role: {
         type: String,
         required: true,
-        enum: ['ADMIN_ROLE','USER_ROLE']
+        enum: ['ADMIN_ROLE','USER_ROLE','SALE_ROLE']
     },
     status: {
         type: Boolean,
@@ -31,5 +31,13 @@ const UserSchema = Schema({
         default: false
     },
 });
+
+//sobre escribir los metodos de mongo
+// sobrescribiendo toJSON. Debe ser una funcion normal
+
+UserSchema.methods.toJSON = function () {  
+    const { __v, password, ...dataUser  } = this.toObject();
+    return dataUser;
+};
 
 module.exports = model('User', UserSchema);
