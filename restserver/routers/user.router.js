@@ -6,7 +6,7 @@ const router = Router();
 // no se ejecuta la funciones de los controllers
 router.get('/', userGet);
 
-router.put('/', userPut);
+router.put('/:id', userPut);
 
 router.post('/', userPost);
 
