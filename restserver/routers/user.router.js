@@ -7,7 +7,7 @@ const { validRole, existEmail, existIdUser } = require('../helpers/db-validators
 
 const { validateFields } = require('../middlewares/valid-field.middleware');
 const { validJWT } = require('../middlewares/valid-jwt.middleware');
-const { adminRole } = require('../middlewares/valid-role.middleware');
+const { adminRole, haveRole } = require('../middlewares/valid-role.middleware');
 
 const router = Router();
 
@@ -33,7 +33,8 @@ router.post('/', [
 
 router.delete('/:id', [
     validJWT,
-    adminRole,
+    //adminRole,
+    haveRole('ADMIN_ROLE','USER_ROLE'),
     check('id','El ID no es permitido').not().isEmpty().withMessage('El id es obligatorio').isMongoId(),
     check('id').trim().escape().custom(existIdUser),
     validateFields
