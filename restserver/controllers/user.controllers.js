@@ -39,16 +39,19 @@ const userPost = async (req = request, res = response) => {
     });
 };
 
-const userDelete = async (req, res = response) => {
+const userDelete = async (req = require, res = response) => {
     const { id } = req.params;
-
+    const executingUser = req.executingUser;
     // borrando fisicamente el usuario -(no se recomienda)-
    /*  const userDelete = await User.findByIdAndDelete(id); */
 
     // modificando status del usuario en la DB
-    const userChangeStatus = await User.findByIdAndUpdate(id,{status:false});
+    const affectedUser = await User.findByIdAndUpdate(id,{status:false});
 
-    res.json(userChangeStatus);
+    res.json({
+        affectedUser, 
+        executingUser
+    });
 };
 
 const userPut = async (req, res = response) => {
