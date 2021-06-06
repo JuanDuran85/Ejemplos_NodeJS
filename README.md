@@ -13,3 +13,9 @@ Ejemplos básicos de NodeJS
 
 # Heroku
 heroku logs -n 1000 --tail -a=nombre_app
+heroku git:remote -a nombre_repo
+heroku config
+heroku config:set variable=""
+
+# Borrar del cache y dejar el seguimiento de un archivo en git
+git rm .env --cached
