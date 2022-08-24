@@ -83,3 +83,4 @@ app.post('/calculate', (req, res) => {
 });
 
 app.listen(3000);
+console.log("Ejecutando el servidor...");
