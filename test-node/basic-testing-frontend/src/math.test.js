@@ -44,7 +44,7 @@ describe("Math function test",() => {
     });
 
     it('should yield 0 if an empty array is provided', () => {
-      //Arange
+      // Arange
       const numbers = [];
 
       // Act
@@ -59,6 +59,18 @@ describe("Math function test",() => {
       const resultFunction = () => add();
       // Assert
       expect(resultFunction).toThrow();
+    });
+
+    it('should throw an error if provided with multiple arguments instead of an array', () => {
+      // Arange
+      const numOne = 1;
+      const numTwo = 2;
+
+      // Act
+      const resultFunction = () => add(numOne, numTwo);
+
+      // Assert
+      expect(resultFunction).toThrow(/is not iterable/);
     });
 
 })
