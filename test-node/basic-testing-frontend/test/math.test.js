@@ -1,5 +1,5 @@
 import { it, expect, describe } from "vitest";
-import { add } from "./math";
+import { add } from "../src/math";
 
 describe("Math function test",() => {
     it("Should summarize all number values in an array", () => {
