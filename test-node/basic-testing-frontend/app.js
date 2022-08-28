@@ -1,15 +1,16 @@
-import { extrarEnteredNumberValues } from './src/parser.js';
-import { validateInputs } from './src/math.js';
+import { extrarEnteredNumberValues } from "./src/parser.js";
+import { calculateResult } from "./src/math.js";
+import { outputResultFinal, validateResult } from "./src/output.js";
 
-const form = document.querySelector('form');
-const output = document.getElementById('result');
+const form = document.querySelector("form");
+const output = document.getElementById("result");
 
 function formSubmitHandler(event) {
   event.preventDefault();
   const resultNumberValues = extrarEnteredNumberValues(form);
-  const resultValidateInputs = validateInputs(resultNumberValues);
-  const resultText = validateResult(resultValidateInputs);
-  output.textContent = resultText;
+  const resultcalculateResult = calculateResult(resultNumberValues);
+  const resultText = validateResult(resultcalculateResult);
+  outputResultFinal(output, resultText);
 }
 
-form.addEventListener('submit', formSubmitHandler);
+form.addEventListener("submit", formSubmitHandler);
