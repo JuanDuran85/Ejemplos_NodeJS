@@ -55,6 +55,7 @@ describe('Testo to cleanNumbers function',()=>{
 
         // Assert
         expect(result[0]).toBeTypeOf('number')
+        expect(result).toEqual([1,2,3]);
     });
 
     it('should throw an error if an array with at least one empty string is provided', () => {
