@@ -19,6 +19,9 @@ describe('test to http file', () => {
 
     const testFn = vi.fn((url,options)=>{
         return new Promise((resolve,reject)=>{
+            if(typeof(options.body) !== 'string'){
+                return reject('Not a string');
+            }
             const testResponseOut = {
                 ok: true,
                 json() {
@@ -36,6 +39,22 @@ describe('test to http file', () => {
         const testData = { message: 'test ok'};
 
         // Act - Assert
-        expect(sendDataRequest(testData)).resolves.toEqual(testResponseDataOut)
+        return expect(sendDataRequest(testData)).resolves.toEqual(testResponseDataOut)
+    });
+
+    it('Should convert the provided data to JSON before sending the request', async () => {
+        // Arange
+        const testData = { message: 'test ok'};
+        let errorMsg;
+
+        // Act return expect(sendDataRequest(testData)).not.rejects.toBe('Not a string');
+        try {
+            await sendDataRequest(testData);
+        } catch (error) {
+            errorMsg = error;
+        }
+
+        // Assert
+        expect(errorMsg).not.toBe('Not a string');
     });
 });
