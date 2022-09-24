@@ -1,20 +1,22 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { extractPostData } from '../posts/posts';
 
 describe('test to extractPostData method from post file', () => {
-    it('should extract title and content from the provided form data', () => {
-        // Arange
-        const testTitle = 'test title';
-        const testContent = 'test content';
+    const testTitle = 'test title';
+    const testContent = 'test content';
+    let testForm;
 
-        const testForm = {
+    beforeEach(() => {
+        testForm = {
             title: testTitle,
             content: testContent,
             get(nameProperty){
                 return this[nameProperty];
             }
         };
+    });
 
+    it('should extract title and content from the provided form data', () => {
         // Act
         const testData = extractPostData(testForm);
 
