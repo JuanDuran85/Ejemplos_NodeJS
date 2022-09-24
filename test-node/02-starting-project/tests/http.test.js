@@ -1,5 +1,6 @@
 import { vi, expect, describe, it } from 'vitest';
 import { sendDataRequest } from '../util/http';
+import { HttpError } from '../util/errors';
 
 
 /** 
@@ -56,5 +57,25 @@ describe('test to http file', () => {
 
         // Assert
         expect(errorMsg).not.toBe('Not a string');
+    });
+
+    it('should throw an HttpError in case of non-ok  responses', () => {
+        // Arange
+        testFn.mockImplementationOnce((url,options)=>{
+            return new Promise((resolve,reject)=>{
+                const testResponseOut = {
+                    ok: false,
+                    json() {
+                        return Promise.resolve(testResponseDataOut)
+                    },
+                };
+                resolve(testResponseOut);
+            })
+        });
+
+        const testData = { message: 'test ok'};
+
+         // Act - Assert
+         return expect(sendDataRequest(testData)).rejects.toBeInstanceOf(HttpError);
     });
 });
