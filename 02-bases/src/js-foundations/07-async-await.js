@@ -1,16 +1,17 @@
+const { http } = require("../plugins");
+
 const getPokemonByIdAsync = async (id) => {
   const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
-  let namePokemon = "";
+  let pokemon;
 
   try {
-    const response = await fetch(url);
-    namePokemon = await response.json();
+    pokemon = await http.get(url);
   } catch (error) {
     console.error(error);
     throw new Error("Something went wrong");
   }
 
-  return namePokemon.name;
+  return pokemon.name;
 };
 
 module.exports = getPokemonByIdAsync;
