@@ -6,9 +6,9 @@ console.debug("-----------------------");
 
 console.debug(emailTemplate);
 const id = 3;
-getUserById(id, function (error, user) {
+getUserById(id, (error, user) => {
   if (error) {
-    console.debug(error);
+    console.error(error);
     throw new Error(error);
   }
 
