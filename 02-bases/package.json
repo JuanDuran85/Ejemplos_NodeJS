@@ -20,6 +20,8 @@
     "dev": "nodemon src/app.js"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "get-age": "^1.0.1",
+    "nodemon": "^3.1.10",
+    "uuid": "^13.0.0"
   }
 }

@@ -1,6 +1,8 @@
 const { emailTemplate } = require("./js-foundations/01-template");
-require("./js-foundations/02-destructuring");
 const { getUserById } = require("./js-foundations/03-callbacks.js");
+require("./js-foundations/02-destructuring");
+require("./js-foundations/04-arrow");
+require("./js-foundations/05-factory-functions");
 
 console.debug("-----------------------");
 
