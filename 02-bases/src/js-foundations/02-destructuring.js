@@ -1,5 +1,5 @@
-console.debug(process.env.PORT ?? 3000);
 
 const { PUBLIC, ProgramData, USERNAME } = process.env;
-
-console.table({ PUBLIC, ProgramData, USERNAME });
+console.debug("-----------------------");
+console.table({ ProgramData, USERNAME });
+console.debug(process.env.PORT ?? 3000);
