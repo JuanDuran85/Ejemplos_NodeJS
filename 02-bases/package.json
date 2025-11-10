@@ -16,16 +16,21 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js"
+    "build": "rimraf ./dist && tsc",
+    "start": "npm run build && node dist/app.js",
+    "dev": "nodemon"
   },
   "devDependencies": {
-    "axios": "^1.13.2",
-    "get-age": "^1.0.1",
+    "@types/node": "^24.10.0",
     "nodemon": "^3.1.10",
-    "uuid": "^13.0.0"
+    "rimraf": "^6.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
+    "axios": "^1.13.2",
+    "get-age": "^1.0.1",
+    "uuid": "^13.0.0",
     "winston": "^3.18.3"
   }
 }
