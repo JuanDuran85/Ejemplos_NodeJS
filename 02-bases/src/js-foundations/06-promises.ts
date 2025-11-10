@@ -1,5 +1,5 @@
-const getPokemonId = (id) => {
-  const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+export const getPokemonId = (id: string | number) => {
+  const url: string = `https://pokeapi.co/api/v2/pokemon/${id}`;
   return fetch(url)
     .then((response) => response.json())
     .then((pokemon) => pokemon.name)
@@ -9,5 +9,3 @@ const getPokemonId = (id) => {
     })
     .finally(() => console.debug("finally"));
 };
-
-module.exports = getPokemonId;

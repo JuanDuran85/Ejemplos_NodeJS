@@ -1,6 +1,13 @@
-import { buildLogger } from "./plugins";
+import {
+  buildLogger,
+  getAgePlugin,
+  getUUID,
+  httpClientAxiosPlugin,
+  httpClientPlugin,
+} from "./plugins";
 
 const logger = buildLogger("app.ts");
 
 logger.log("Logger from app.ts");
 logger.error("Error from app.ts");
+

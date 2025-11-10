@@ -1,4 +1,6 @@
-const users = [
+type User = { id: number; name: string };
+
+const users: User[] = [
   {
     id: 1,
     name: "Leanne Graham",
@@ -25,12 +27,13 @@ const users = [
   },
 ];
 
-const getUserById = (id, callback) => {
+export const getUserByIdArrow = (
+  id: number | string,
+  callback: (error?: string, user?: User) => void
+) => {
   const user = users.find((user) => user.id === id);
 
-  return user ? callback(`User not found with id ${id}`) : callback(null, user);
-};
-
-module.exports = {
-  getUserById,
+  return user
+    ? callback(`User not found with id ${id}`)
+    : callback(undefined, user);
 };
