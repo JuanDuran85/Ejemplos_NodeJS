@@ -1,0 +1,31 @@
+{
+  "name": "02-bases",
+  "version": "0.0.1",
+  "description": "bases 101",
+  "homepage": "https://github.com/JuanDuran85/Ejemplos_NodeJS#readme",
+  "bugs": {
+    "url": "https://github.com/JuanDuran85/Ejemplos_NodeJS/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JuanDuran85/Ejemplos_NodeJS.git"
+  },
+  "license": "ISC",
+  "author": "Juan",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "devDependencies": {
+    "axios": "^1.13.2",
+    "get-age": "^1.0.1",
+    "nodemon": "^3.1.10",
+    "uuid": "^13.0.0"
+  },
+  "dependencies": {
+    "winston": "^3.18.3"
+  }
+}
