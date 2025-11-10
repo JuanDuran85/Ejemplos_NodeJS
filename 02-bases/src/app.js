@@ -11,8 +11,9 @@ require("./js-foundations/04-arrow");
 
 console.debug("-----------------------");
 
-const logger = buildLogger('app.js');
-logger.log('Log from app.js');
+const logger = buildLogger("app.js");
+logger.log("Log from app.js");
+logger.error("Error from app.js");
 
 console.debug("-----------------------");
 console.debug(emailTemplate);
