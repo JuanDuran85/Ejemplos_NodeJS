@@ -1,3 +1,4 @@
+import { getUserById } from "./js-foundations";
 import {
   buildLogger,
   getAgePlugin,
@@ -5,6 +6,14 @@ import {
   httpClientAxiosPlugin,
   httpClientPlugin,
 } from "./plugins";
+
+getUserById("1", (error, user) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.debug(user);
+  }
+});
 
 const logger = buildLogger("app.ts");
 
