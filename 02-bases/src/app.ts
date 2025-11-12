@@ -26,6 +26,5 @@ console.debug(getUUID());
 httpClientAxiosPlugin
   .get("https://jsonplaceholder.typicode.com/todos/1")
   .then((response) => console.debug(response));
-httpClientPlugin
-  .get("https://jsonplaceholder.typicode.com/todos/1")
-  .then((response) => console.debug(response));
+const pokemonName = httpClientPlugin.get("https://pokeapi.co/api/v2/pokemon/1");
+pokemonName.then((response) => console.debug(response));

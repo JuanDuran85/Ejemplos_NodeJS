@@ -1,11 +1,9 @@
-export const getPokemonId = (id: string | number) => {
+import { httpClientPlugin as http } from "../plugins";
+
+export const getPokemonId: (id: string | number) => Promise<string> = async (
+  id: string | number
+): Promise<string> => {
   const url: string = `https://pokeapi.co/api/v2/pokemon/${id}`;
-  return fetch(url)
-    .then((response) => response.json())
-    .then((pokemon) => pokemon.name)
-    .catch((error) => {
-      console.error({ error });
-      throw new Error("Something went wrong");
-    })
-    .finally(() => console.debug("finally"));
+  const pokemon = await http.get(url);
+  return pokemon.name;
 };
