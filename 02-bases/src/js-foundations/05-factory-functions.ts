@@ -8,10 +8,15 @@ type BuildMakerPersonOptions = {
   getAge: (birthdate: string) => number;
 };
 
-export const buildMakePerson = ({
+export const buildMakePerson: ({
   getUUID,
   getAge,
-}: BuildMakerPersonOptions) => {
+}: BuildMakerPersonOptions) => ({ name, birthdate }: MakePerson) => {
+  id: string;
+  name: string;
+  birthdate: string;
+  age: number;
+} = ({ getUUID, getAge }: BuildMakerPersonOptions) => {
   return ({ name, birthdate }: MakePerson) => {
     return {
       id: getUUID(),

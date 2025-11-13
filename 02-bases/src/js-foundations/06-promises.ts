@@ -1,11 +1,14 @@
-export const getPokemonId = (id: string | number) => {
-  const url: string = `https://pokeapi.co/api/v2/pokemon/${id}`;
-  return fetch(url)
-    .then((response) => response.json())
-    .then((pokemon) => pokemon.name)
-    .catch((error) => {
-      console.error({ error });
-      throw new Error("Something went wrong");
-    })
-    .finally(() => console.debug("finally"));
+import { httpClientPlugin as http } from "../plugins";
+
+export const getPokemonId: (id: string | number) => Promise<string> = async (
+  id: string | number
+): Promise<string> => {
+  try {
+    const url: string = `https://pokeapi.co/api/v2/pokemon/${id}`;
+    const pokemon = await http.get(url);
+    return pokemon.name;
+  } catch (error) {
+    console.error(`Something went wrong - Error: ${error?.toString()}`);
+    throw new Error(`Something went wrong - Pokemon not found with id ${id}`);
+  }
 };
