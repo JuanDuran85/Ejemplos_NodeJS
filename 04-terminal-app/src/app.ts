@@ -1,19 +1,12 @@
-import { mkdirSync, writeFileSync } from "node:fs";
+import { yarg } from "./config/plugins/yargs.plugins";
 
-const baseMultiplier: number = 5;
-let dataToSave: string = `
-=========================================
-            TABLA DEL ${baseMultiplier}         
-=========================================\n
-`;
+(async () => {
+  console.debug("Start app...");
+  console.debug(yarg);
+  await main();
+  console.debug("End app...");
+})();
 
-for (let i = 1; i <= 10; i++) {
-  dataToSave += `${baseMultiplier} * ${i} = ${baseMultiplier * i} \n`;
+async function main() {
+  console.debug("Executed Code");
 }
-console.debug(dataToSave);
-
-const outputPath: string = "output";
-
-mkdirSync(outputPath, { recursive: true });
-
-writeFileSync(`output/table_${baseMultiplier}.txt`, dataToSave, "utf-8");
