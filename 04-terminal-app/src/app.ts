@@ -1,20 +1,19 @@
-import { writeFile } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 
-console.debug("=========================================");
-console.debug("             TABLA DEL 5         ");
-console.debug("=========================================");
-
-let dataToSave = `
-  =========================================
-             TABLA DEL 5         
-  =========================================
+const baseMultiplier: number = 5;
+let dataToSave: string = `
+=========================================
+            TABLA DEL ${baseMultiplier}         
+=========================================\n
 `;
 
 for (let i = 1; i <= 10; i++) {
-  console.debug(`5 * ${i} = ${5 * i}`);
-  dataToSave += `5 * ${i} = ${5 * i} \n`;
+  dataToSave += `${baseMultiplier} * ${i} = ${baseMultiplier * i} \n`;
 }
+console.debug(dataToSave);
 
-writeFile("outputs/table_five.txt", dataToSave, "utf-8", (error) => {
-  if (error) console.error("Something went wrong");
-});
+const outputPath: string = "output";
+
+mkdirSync(outputPath, { recursive: true });
+
+writeFileSync(`output/table_${baseMultiplier}.txt`, dataToSave, "utf-8");
