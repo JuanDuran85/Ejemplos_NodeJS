@@ -6,7 +6,7 @@ type BuilderLoggerInterface = {
   error: (message: string) => winston.Logger;
 };
 
-const logger: winston.Logger = winston.createLogger({
+export const logger: winston.Logger = winston.createLogger({
   level: "info",
   format: combine(timestamp(), json()),
   transports: [

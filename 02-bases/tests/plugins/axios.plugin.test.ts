@@ -1,4 +1,11 @@
-import { describe, test, expect, jest } from "@jest/globals";
+import { describe, test, expect, jest, afterEach } from "@jest/globals";
+
+import axios from "axios";
+
+import { httpClientAxiosPlugin } from "../../src/plugins/axios.plugin";
+
+jest.mock("axios");
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe("plugins/axios.plugin", () => {
   test("should return an object", () => {
@@ -35,5 +42,42 @@ describe("plugins/axios.plugin", () => {
     const result = axios().get("https://jsonplaceholder.typicode.com/users");
     expect(typeof result).toBe("object");
     expect(axios.mock.calls.length).toBe(1);
+  });
+});
+
+describe("httpClientAxiosPlugin - Mock", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Should return a user", async () => {
+    // Arrange
+    const mockData = { id: 1, name: "Test User" };
+    const mockResponse = { data: mockData };
+    const testUrl: string = "https://api.example.com/users/1";
+
+    mockedAxios.get.mockResolvedValue(mockResponse);
+
+    // Act
+    const result = await httpClientAxiosPlugin.get(testUrl);
+
+    // Assert
+    expect(result).toEqual(mockData);
+    expect(mockedAxios.get).toHaveBeenCalledTimes(1);
+    expect(mockedAxios.get).toHaveBeenCalledWith(testUrl);
+  });
+
+  test("Should  throw an error if the request fails", async () => {
+    // Arrange
+    const testUrl = "https://api.example.com/users/1";
+    const mockError = new Error("Network Error");
+
+    mockedAxios.get.mockRejectedValue(mockError);
+
+    // Act & Assert
+    await expect(httpClientAxiosPlugin.get(testUrl)).rejects.toThrow(
+      "Network Error"
+    );
+    expect(mockedAxios.get).toHaveBeenCalledWith(testUrl);
   });
 });
