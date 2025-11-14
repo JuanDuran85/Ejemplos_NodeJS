@@ -19,7 +19,7 @@ export class SaveFile implements SaveFileUseCase {
       const {
         fileContent,
         fileDestination = "output",
-        fileName = "table.txt",
+        fileName = "table",
       } = options;
 
       mkdirSync(fileDestination, { recursive: true });
