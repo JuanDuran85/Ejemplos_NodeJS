@@ -1,16 +1,21 @@
 import { mkdirSync, writeFileSync } from "node:fs";
+import { yarg } from "./config/plugins/yargs.plugins";
 
-const baseMultiplier: number = 5;
+const { b: baseMultiplier, l: limit, s: show } = yarg;
+
 let dataToSave: string = `
 =========================================
-            TABLA DEL ${baseMultiplier}         
+      Table of ${baseMultiplier}         
 =========================================\n
 `;
 
-for (let i = 1; i <= 10; i++) {
+for (let i = 1; i <= limit; i++) {
   dataToSave += `${baseMultiplier} * ${i} = ${baseMultiplier * i} \n`;
 }
-console.debug(dataToSave);
+
+if (show) {
+  console.debug(dataToSave);
+}
 
 const outputPath: string = "output";
 

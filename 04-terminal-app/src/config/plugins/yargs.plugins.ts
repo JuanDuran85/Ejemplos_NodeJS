@@ -12,6 +12,7 @@ export const yarg: {
   .option("b", {
     alias: "base",
     type: "number",
+    default: 1,
     demandOption: true,
     describe: "Multiplication table base",
   })
