@@ -12,7 +12,6 @@ export const yarg: {
   .option("b", {
     alias: "base",
     type: "number",
-    default: 1,
     demandOption: true,
     describe: "Multiplication table base",
   })
@@ -27,6 +26,18 @@ export const yarg: {
     type: "boolean",
     default: false,
     describe: "Show multiplication table",
+  })
+  .option("n", {
+    alias: "name",
+    type: "string",
+    default: "multiplication-table",
+    describe: "File Name",
+  })
+  .option("d", {
+    alias: "destination",
+    type: "string",
+    default: "output",
+    describe: "File Destination",
   })
   .check((argv: any, options: any) => {
     if (argv.b < 1)
