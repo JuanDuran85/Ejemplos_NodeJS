@@ -33,9 +33,25 @@ describe("SaveFileUseCase", () => {
     const mkdirSpy = jest.spyOn(fs, "mkdirSync").mockImplementation(() => {
       throw new Error("This is a custom message...");
     });
-    const result = saveFile.execute({ fileContent: "test content to save" });
+    const result: boolean = saveFile.execute({
+      fileContent: "test content to save",
+    });
     expect(result).toBeFalsy();
     mkdirSpy.mockRestore();
+  });
+
+  test("should return false if file could not be created in destination", () => {
+    const saveFile: SaveFile = new SaveFile();
+    const writeFileSpy = jest
+      .spyOn(fs, "writeFileSync")
+      .mockImplementation(() => {
+        throw new Error("This is a custom message...");
+      });
+    const result: boolean = saveFile.execute({
+      fileContent: "test content to save",
+    });
+    expect(result).toBeFalsy();
+    writeFileSpy.mockRestore();
   });
 });
 
