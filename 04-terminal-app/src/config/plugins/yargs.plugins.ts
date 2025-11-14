@@ -6,6 +6,8 @@ export const yarg: {
   b: number;
   l: number;
   s: boolean;
+  n: string;
+  d: string;
   _: (string | number)[];
   $0: string;
 } = yargs(hideBin(process.argv))

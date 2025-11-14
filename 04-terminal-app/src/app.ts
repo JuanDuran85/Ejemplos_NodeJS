@@ -8,7 +8,7 @@ import { ServerApp } from "./presentation/server-app";
 })();
 
 async function main() {
-  const { b: base, l: limit, s: show } = yarg;
-  ServerApp.run({ base, limit, show });
+  const { b: base, l: limit, s: show, d: destination, n: name } = yarg;
+  ServerApp.run({ base, limit, show, destination, name });
   console.debug("Executed Code");
 }
