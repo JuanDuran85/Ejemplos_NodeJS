@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
-import { CreateTable } from "../../../../src/domain/use-case/create-table.use-case";
+import { CreateTable } from "../../../src/domain/use-case/create-table.use-case";
 
 describe("CreateTableUseCase", () => {
   it("should be create table with default values", () => {
@@ -7,20 +7,20 @@ describe("CreateTableUseCase", () => {
       base: 6,
       limit: 20,
     };
-    
+
     const createTable: CreateTable = new CreateTable();
     const table: string = createTable.execute(options);
     const row: number = table.split("\n").length;
 
     expect(createTable).toBeInstanceOf(CreateTable);
     expect(typeof table).toBe("string");
-    expect(table).toContain('6 x 1 = 6');
-    expect(table).toContain('6 x 2 = 12');
-    expect(table).toContain('6 x 20 = 120');
+    expect(table).toContain("6 x 1 = 6");
+    expect(table).toContain("6 x 2 = 12");
+    expect(table).toContain("6 x 20 = 120");
     expect(row).toBe(20);
   });
 
-  it('should create table with custom values', () => {
+  it("should create table with custom values", () => {
     const options = {
       base: 7,
       limit: 7,

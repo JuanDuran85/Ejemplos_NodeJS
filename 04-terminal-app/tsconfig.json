@@ -2,7 +2,7 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "dist/",
 
     // Environment Settings
@@ -42,5 +42,5 @@
     "skipLibCheck": true
   },
   "exclude": ["node_modules", "dist", "__tests__", "build", "coverage", "src/**/*.test.ts"],
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "tests/**/*"]
 }
