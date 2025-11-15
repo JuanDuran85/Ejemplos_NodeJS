@@ -12,7 +12,9 @@ export class CreateTable {
     let dataToSave: string = ``;
 
     for (let i = 1; i <= limit; i++) {
-      dataToSave += `${base} * ${i} = ${base * i} \n`;
+      dataToSave += `${base} x ${i} = ${base * i}`;
+
+      if (i < limit) dataToSave += "\n";
     }
 
     return dataToSave;
