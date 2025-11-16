@@ -18,4 +18,18 @@ export class LogEntity {
     this.message = message;
     this.createdAt = new Date();
   }
+
+  public static fromJson(json: string): LogEntity {
+    try {
+      const { message, level, createdAt } = JSON.parse(json);
+      if (!message || !level || !createdAt)
+        throw new Error("Invalid log format");
+      const log = new LogEntity(level, message);
+      log.createdAt = new Date(createdAt);
+      return log;
+    } catch (error) {
+      console.error(String(error));
+      throw new Error("Invalid log format");
+    }
+  }
 }
