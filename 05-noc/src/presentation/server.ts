@@ -1,16 +1,11 @@
-import { CronJob } from "cron";
+import { CronService } from "./cron/cron-service";
 
 export class ServerApp {
   public static start(): void {
     console.debug("Server Started...");
-
-    const job: CronJob<null, null> = new CronJob("*/3 * * * * *", () => {
-      const date = new Date();
-      console.log(
-        `Server run at ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
-      );
+    CronService.createJob("*/5 * * * * *", () => {
+      const date: Date = new Date();
+      console.debug("5 seconds: ", date.toString());
     });
-
-    job.start();
   }
 }
