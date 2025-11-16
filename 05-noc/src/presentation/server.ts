@@ -1,3 +1,4 @@
+import { CheckService } from "../domain/use-cases/checks/check-service";
 import { CronService } from "./cron/cron-service";
 
 export class ServerApp {
@@ -6,6 +7,7 @@ export class ServerApp {
     CronService.createJob("*/5 * * * * *", () => {
       const date: Date = new Date();
       console.debug("5 seconds: ", date.toString());
+      new CheckService().execute("https://alirafael.com");
     });
   }
 }
