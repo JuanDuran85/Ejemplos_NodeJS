@@ -7,7 +7,11 @@ export class ServerApp {
     CronService.createJob("*/5 * * * * *", () => {
       const date: Date = new Date();
       console.debug("5 seconds: ", date.toString());
-      new CheckService().execute("https://alirafael.com");
+      const url: string = "http://localhost:3000";
+      new CheckService(
+        () => console.debug(`${url} is up!`),
+        (error) => console.error(error)
+      ).execute(url);
     });
   }
 }
