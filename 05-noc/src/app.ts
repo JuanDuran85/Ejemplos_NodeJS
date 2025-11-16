@@ -1,7 +1,9 @@
-const name: string = "Juan";
+import { ServerApp } from "./presentation/server";
 
-console.log(name);
+(() => {
+  main();
+})();
 
-const age: number = 354440;
-
-console.log(age);
+function main() {
+  ServerApp.start();
+}
