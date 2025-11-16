@@ -37,8 +37,11 @@ export class CheckService implements CheckServiceUserCase {
       this.successCallback();
       return true;
     } catch (error) {
-      const errorMessage = `${error}`;
-      const logToSave = new LogEntity(LogSeverityLevel.ERROR, errorMessage);
+      const errorMessage: string = `${url} is not Ok. Error: ${error}. Please check.`;
+      const logToSave: LogEntity = new LogEntity(
+        LogSeverityLevel.ERROR,
+        errorMessage
+      );
       this.logRepository.saveLog(logToSave);
       this.errorCallback(errorMessage);
       return false;

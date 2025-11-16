@@ -10,7 +10,7 @@ const fileSystemLogRepository: LogRepositoryImpl = new LogRepositoryImpl(
 export class ServerApp {
   public static start(): void {
     console.debug("Server Started...");
-    CronService.createJob("*/5 * * * * *", () => {
+    CronService.createJob("*/10 * * * * *", () => {
       const date: Date = new Date();
       console.debug("5 seconds: ", date.toString());
       const url: string = "http://localhost:3000";
