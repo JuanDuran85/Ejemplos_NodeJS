@@ -5,10 +5,15 @@ import { LogEntity, LogSeverityLevel } from "../../domain/entities/log.entity";
 
 interface SenMailOptions {
   from: string;
-  to: string;
+  to: string | string[];
   subject: string;
   htmlBody: string;
-  attachments?: string[];
+  attachments?: Attachment[];
+}
+
+interface Attachment {
+  filename: string;
+  path: string;
 }
 
 export class EmailService {
@@ -31,7 +36,7 @@ export class EmailService {
     });
 
   public async sendEmail(options: SenMailOptions): Promise<boolean> {
-    const { from, htmlBody, subject, to } = options;
+    const { from, htmlBody, subject, to, attachments = [] } = options;
 
     try {
       const sentInformation = await this.transporter.sendMail({
@@ -39,8 +44,15 @@ export class EmailService {
         to,
         subject,
         html: htmlBody,
+        attachments,
       });
-      console.debug(sentInformation);
+      this.logRepository.saveLog(
+        new LogEntity({
+          level: LogSeverityLevel.ERROR,
+          message: `Email sent OK: ${JSON.stringify(sentInformation)}`,
+          origin: "EmailService.ts",
+        })
+      );
       return true;
     } catch (error) {
       const errorMessage: string = `Error: ${error}. Please check email service.`;
@@ -53,5 +65,31 @@ export class EmailService {
 
       return false;
     }
+  }
+
+  public async sendEmailWithFileSystemLogs(
+    to: string | string[]
+  ): Promise<boolean> {
+    const subject = "Server Logs";
+    const htmlBody = `
+    <h1>Server Logs - NOC</h1>
+    <p>This is the server logs.</p>
+    <p>Please check the attached file.</p>
+    `;
+
+    const attachments: Attachment[] = [
+      { filename: "all-logs.log", path: "./logs/all-logs.log" },
+      { filename: "medium-logs.log", path: "./logs/medium-logs.log" },
+      { filename: "high-logs.log", path: "./logs/high-logs.log" },
+      { filename: "error-logs.log", path: "./logs/error-logs.log" },
+    ];
+
+    return this.sendEmail({
+      from: envs.EMAIL_NAME,
+      to,
+      subject,
+      htmlBody,
+      attachments,
+    });
   }
 }

@@ -13,15 +13,10 @@ export class ServerApp {
     console.debug("Server Started...");
 
     const emailService = new EmailService(fileSystemLogRepository);
-    emailService.sendEmail({
-      from: "test@gmail.com",
-      to: "test@gmail.com",
-      subject: "Test Email",
-      htmlBody: `
-        <h1>Test Email</h1>
-        <p>This is a test email.</p>
-      `,
-    });
+    emailService.sendEmailWithFileSystemLogs([
+      "duran85juan@gmail.com",
+      "jcduran@urbe.edu.ve",
+    ]);
 
     CronService.createJob("*/10 * * * * *", () => {
       const date: Date = new Date();
