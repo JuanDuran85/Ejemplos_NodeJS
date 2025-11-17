@@ -1,7 +1,5 @@
 import * as nodemailer from "nodemailer";
 import { envs } from "../../config/plugins/envs.plugins";
-import { LogRepository } from "../../domain/repository/log.repository";
-import { LogEntity, LogSeverityLevel } from "../../domain/entities/log.entity";
 
 interface SenMailOptions {
   from: string;
@@ -17,12 +15,6 @@ interface Attachment {
 }
 
 export class EmailService {
-  private readonly logRepository: LogRepository;
-
-  constructor(logRepository: LogRepository) {
-    this.logRepository = logRepository;
-  }
-
   private readonly transporter: nodemailer.Transporter =
     nodemailer.createTransport({
       service: envs.EMAIL_SERVICE,
@@ -39,30 +31,17 @@ export class EmailService {
     const { from, htmlBody, subject, to, attachments = [] } = options;
 
     try {
-      const sentInformation = await this.transporter.sendMail({
+      await this.transporter.sendMail({
         from,
         to,
         subject,
         html: htmlBody,
         attachments,
       });
-      this.logRepository.saveLog(
-        new LogEntity({
-          level: LogSeverityLevel.ERROR,
-          message: `Email sent OK: ${JSON.stringify(sentInformation)}`,
-          origin: "EmailService.ts",
-        })
-      );
       return true;
     } catch (error) {
       const errorMessage: string = `Error: ${error}. Please check email service.`;
-      const logToSave: LogEntity = new LogEntity({
-        level: LogSeverityLevel.ERROR,
-        message: errorMessage,
-        origin: "EmailService.ts",
-      });
-      this.logRepository.saveLog(logToSave);
-
+      console.error(errorMessage);
       return false;
     }
   }
