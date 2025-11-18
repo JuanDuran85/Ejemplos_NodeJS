@@ -8,10 +8,12 @@ interface CheckServiceUserCase {
 type SuccessCallback = () => void;
 type ErrorCallback = (error: string) => void;
 
+const nameFile: string = "check-service";
+
 export class CheckService implements CheckServiceUserCase {
   private readonly logRepository: LogRepository;
-  private readonly successCallback: SuccessCallback;
-  private readonly errorCallback: ErrorCallback;
+  private readonly successCallback: SuccessCallback | undefined;
+  private readonly errorCallback: ErrorCallback | undefined;
 
   constructor(
     logRepository: LogRepository,
@@ -29,21 +31,23 @@ export class CheckService implements CheckServiceUserCase {
       if (reqResponse.status !== 200 || !reqResponse.ok) {
         throw new Error(`Error: ${reqResponse.status}, on service: ${url}`);
       }
-      const logToSave: LogEntity = new LogEntity(
-        LogSeverityLevel.LOW,
-        `Service ${url} is working`
-      );
+      const logToSave: LogEntity = new LogEntity({
+        level: LogSeverityLevel.LOW,
+        message: `Service ${url} is working`,
+        origin: nameFile,
+      });
       this.logRepository.saveLog(logToSave);
-      this.successCallback();
+      this.successCallback?.();
       return true;
     } catch (error) {
       const errorMessage: string = `${url} is not Ok. Error: ${error}. Please check.`;
-      const logToSave: LogEntity = new LogEntity(
-        LogSeverityLevel.ERROR,
-        errorMessage
-      );
+      const logToSave: LogEntity = new LogEntity({
+        level: LogSeverityLevel.ERROR,
+        message: errorMessage,
+        origin: nameFile,
+      });
       this.logRepository.saveLog(logToSave);
-      this.errorCallback(errorMessage);
+      this.errorCallback?.(errorMessage);
       return false;
     }
   }
