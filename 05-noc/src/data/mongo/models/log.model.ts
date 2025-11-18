@@ -17,6 +17,7 @@ const logSchema = new mongoose.Schema({
   message: {
     type: String,
     required: true,
+    default: "Unknown message",
   },
   origin: {
     type: String,
