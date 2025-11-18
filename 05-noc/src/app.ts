@@ -1,6 +1,6 @@
-import { LogModel, MongoDataBase } from "./data";
-import { ServerApp } from "./presentation/server";
 import { envs } from "./config/plugins/envs.plugins";
+import { MongoDataBase } from "./data";
+import { ServerApp } from "./presentation/server";
 
 (async () => {
   main();

@@ -10,7 +10,7 @@ import mongoose from "mongoose";
 const logSchema = new mongoose.Schema({
   level: {
     type: String,
-    enum: ["LOW", "MEDIUM", "HIGH", "ERROR"],
+    enum: ["low", "medium", "high", "error"],
     required: true,
     default: "LOW",
   },
@@ -21,6 +21,7 @@ const logSchema = new mongoose.Schema({
   },
   origin: {
     type: String,
+    default: "Unknown origin",
   },
   createdAt: {
     type: Date,
