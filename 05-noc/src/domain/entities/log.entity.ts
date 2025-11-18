@@ -46,4 +46,24 @@ export class LogEntity {
       throw new Error("Invalid log format");
     }
   }
+
+  public static fromObject(objectIn: { [key: string]: any }): LogEntity {
+    try {
+      const { message, level, createAt, origin } = objectIn;
+
+      if (!message || !level || !createAt || !origin)
+        throw new Error("Invalid log format");
+
+      const log: LogEntity = new LogEntity({
+        level,
+        message,
+        origin,
+        createdAt: createAt,
+      });
+      return log;
+    } catch (error) {
+      console.error(String(error));
+      throw new Error("Invalid log format");
+    }
+  }
 }
