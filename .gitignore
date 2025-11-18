@@ -145,3 +145,7 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
 .kilocode/mcp.json
+
+# mongodb
+mongo-db
+mongo
