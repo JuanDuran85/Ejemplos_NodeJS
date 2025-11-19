@@ -1,17 +1,10 @@
 generator client {
   provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-}
-
-enum SeverityLevel {
-  LOW
-  MEDIUM
-  HIGH
-  ERROR
 }
 
 model LogModel {
@@ -20,4 +13,11 @@ model LogModel {
   origin    String
   level     SeverityLevel
   createdAt DateTime      @default(now())
+}
+
+enum SeverityLevel {
+  LOW
+  MEDIUM
+  HIGH
+  ERROR
 }
