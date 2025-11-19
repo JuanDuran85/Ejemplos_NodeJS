@@ -148,3 +148,6 @@ vite.config.ts.timestamp-*
 
 # mongodb
 mongo-db
+
+# postgres
+postgres-db
