@@ -153,4 +153,6 @@ mongo-db
 postgres-db
 
 # prisma
-Users/duran/Downloads/codigos_exa/Ejemplos_NodeJS/05-noc/generated/prisma
+05-noc/generated/prisma
+05-noc/prisma/migrations
+
