@@ -1,11 +1,8 @@
 export enum LogSeverityLevel {
-  DEBUG = "debug",
-  INFO = "info",
-  WARN = "warn",
-  ERROR = "error",
   LOW = "low",
   MEDIUM = "medium",
   HIGH = "high",
+  ERROR = "error",
 }
 
 export interface LogEntityInterface {
@@ -48,9 +45,9 @@ export class LogEntity {
     }
   }
 
-  public static fromObject(objectIn: { [key: string]: any }): LogEntity {
+  public static fromObjectDoc(objectIn: { [key: string]: any }): LogEntity {
     try {
-      const { message, level, createAt = new Date(), origin } = objectIn._doc;
+      const { message, level, createAt = new Date(), origin } = objectIn;
 
       if (!message || !level || !createAt || !origin)
         throw new Error("Invalid log format");

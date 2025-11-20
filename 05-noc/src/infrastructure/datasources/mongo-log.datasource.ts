@@ -19,6 +19,8 @@ export class MongoLogDataSource implements LogDatasources {
       level: severityLevel,
     });
 
-    return logsFromDb.map((mongoLog) => LogEntity.fromObject(mongoLog));
+    return logsFromDb.map((mongoLog) =>
+      LogEntity.fromObjectDoc(mongoLog.toObject())
+    );
   }
 }
