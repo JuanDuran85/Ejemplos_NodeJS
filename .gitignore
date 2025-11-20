@@ -145,3 +145,14 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
 .kilocode/mcp.json
+
+# mongodb
+mongo-db
+
+# postgres
+postgres-db
+
+# prisma
+05-noc/generated/prisma
+05-noc/prisma/migrations
+

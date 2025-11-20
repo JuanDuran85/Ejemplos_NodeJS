@@ -15,15 +15,21 @@
   "type": "commonjs",
   "devDependencies": {
     "@types/node": "^24.10.1",
-    "@types/nodemailer": "^7.0.3",
-    "rimraf": "^6.1.0",
+    "@types/nodemailer": "^7.0.4",
+    "@types/pg": "^8.15.6",
+    "prisma": "^7.0.0",
+    "rimraf": "^6.1.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.0.0",
+    "@prisma/client": "^7.0.0",
     "cron": "^4.3.4",
     "dotenv": "^17.2.3",
     "env-var": "^7.5.0",
-    "nodemailer": "^7.0.10"
+    "mongoose": "^8.20.0",
+    "nodemailer": "^7.0.10",
+    "pg": "^8.16.3"
   }
 }

@@ -31,7 +31,8 @@ export class LogEntity {
 
   public static fromJson(json: string): LogEntity {
     try {
-      const { message, level, createdAt } = JSON.parse(json);
+      const finalJson = json === "" ? "{}" : json;
+      const { message, level, createdAt } = JSON.parse(finalJson);
       if (!message || !level || !createdAt)
         throw new Error("Invalid log format");
       const log: LogEntity = new LogEntity({
@@ -39,6 +40,26 @@ export class LogEntity {
         message,
         origin: "LogEntity.ts",
         createdAt,
+      });
+      return log;
+    } catch (error) {
+      console.error(String(error));
+      throw new Error("Invalid log format");
+    }
+  }
+
+  public static fromObject(objectIn: { [key: string]: any }): LogEntity {
+    try {
+      const { message, level, createAt = new Date(), origin } = objectIn._doc;
+
+      if (!message || !level || !createAt || !origin)
+        throw new Error("Invalid log format");
+
+      const log: LogEntity = new LogEntity({
+        level,
+        message,
+        origin,
+        createdAt: createAt,
       });
       return log;
     } catch (error) {
