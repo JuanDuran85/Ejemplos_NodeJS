@@ -148,9 +148,11 @@ vite.config.ts.timestamp-*
 
 # mongodb
 mongo-db
+mongo-test
 
 # postgres
 postgres-db
+postgres-test
 
 # prisma
 05-noc/generated/prisma
