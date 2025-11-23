@@ -156,3 +156,4 @@ postgres-db
 05-noc/generated/prisma
 05-noc/prisma/migrations
 
+05-noc/.env.test
