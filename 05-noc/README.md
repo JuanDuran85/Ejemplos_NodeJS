@@ -37,6 +37,16 @@ A Network Operations Center (NOC) application built with Node.js and TypeScript 
    npm install
    ```
 
+4. Generate Prisma Client based on your introspected schema:
+   ```bash
+   npx prisma generate
+   ```
+
+5. Create and apply a migration:
+   ```bash
+   npx prisma migrate dev
+   ```
+
 ## Configuration
 
 1. Copy the environment template:

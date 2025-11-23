@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "dev": "tsnd --respawn --clear src/app.ts",
     "build": "rimraf ./dist && tsc",
     "start": "npm run build && node dist/app.js"
@@ -14,11 +16,16 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@jest/globals": "^30.2.0",
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.10.1",
     "@types/nodemailer": "^7.0.4",
     "@types/pg": "^8.15.6",
+    "jest": "^30.2.0",
     "prisma": "^7.0.0",
     "rimraf": "^6.1.2",
+    "supertest": "^7.1.4",
+    "ts-jest": "^29.4.5",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3"
   },

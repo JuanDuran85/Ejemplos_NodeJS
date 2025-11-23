@@ -26,7 +26,7 @@ export class ServerApp {
     CronService.createJob("*/10 * * * * *", () => {
       const date: Date = new Date();
       console.debug("5 seconds: ", date.toString());
-      const url: string = "http://alirafasdasdasdael.com";
+      const url: string = "http://alirafael.com";
       new CheckServiceMultiple(
         [logRepositoryFileSystem, logRepositoryMongoDb, logRepositoryPostgres],
         () => console.debug(`${url} is up!`),
