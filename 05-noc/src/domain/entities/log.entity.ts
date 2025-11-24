@@ -29,14 +29,14 @@ export class LogEntity {
   public static fromJson(json: string): LogEntity {
     try {
       const finalJson = json === "" ? "{}" : json;
-      const { message, level, createdAt } = JSON.parse(finalJson);
+      const { message, level, createdAt, origin } = JSON.parse(finalJson);
       if (!message || !level || !createdAt)
         throw new Error("Invalid log format");
       const log: LogEntity = new LogEntity({
         level,
         message,
-        origin: "LogEntity.ts",
-        createdAt,
+        origin,
+        createdAt: new Date(createdAt),
       });
       return log;
     } catch (error) {
