@@ -34,12 +34,7 @@ export class FileSystemDatasource implements LogDatasources {
       }
 
       for (const path of this.logsLevelPaths) {
-        if (existsSync(path)) {
-          console.debug(path);
-          console.debug(existsSync(path));
-
-          return;
-        }
+        if (existsSync(path)) return;
         writeFileSync(path, "");
       }
     } catch (error) {

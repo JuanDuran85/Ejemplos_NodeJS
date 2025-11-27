@@ -31,7 +31,7 @@ describe("File System DataSource Test", () => {
   });
 
   it("Should save a log in all-logs.log file", async () => {
-    const fileSaved = new FileSystemDatasource();
+    const fileSaved: FileSystemDatasource = new FileSystemDatasource();
     const newLog: LogEntity = new LogEntity({
       level: LogSeverityLevel.LOW,
       message: "Test One from LogDatasource test",
@@ -46,7 +46,7 @@ describe("File System DataSource Test", () => {
   });
 
   it("Should save a log in all-logs.log and medium-logs.log files", async () => {
-    const fileSaved = new FileSystemDatasource();
+    const fileSaved: FileSystemDatasource = new FileSystemDatasource();
     const newLog: LogEntity = new LogEntity({
       level: LogSeverityLevel.MEDIUM,
       message: "Test Two from LogDatasource test",
@@ -61,7 +61,7 @@ describe("File System DataSource Test", () => {
   });
 
   it("Should save a log in all-logs.log and high-logs.log files", async () => {
-    const fileSaved = new FileSystemDatasource();
+    const fileSaved: FileSystemDatasource = new FileSystemDatasource();
     const newLog: LogEntity = new LogEntity({
       level: LogSeverityLevel.HIGH,
       message: "Test Two from LogDatasource test",
@@ -76,7 +76,7 @@ describe("File System DataSource Test", () => {
   });
 
   it("should return all logs", async () => {
-    const fileSaved = new FileSystemDatasource();
+    const fileSaved: FileSystemDatasource = new FileSystemDatasource();
     const newAllLog: LogEntity = new LogEntity({
       level: LogSeverityLevel.LOW,
       message: "Test Two from LogDatasource test",
@@ -109,5 +109,38 @@ describe("File System DataSource Test", () => {
     expect(allLogs).toContainEqual(newMediumLog);
     expect(allLogs).toContainEqual(newHighLog);
     expect(allLogs).toContainEqual(newErrorLog);
+
+    const mediumLogs = await fileSaved.getLogs(LogSeverityLevel.MEDIUM);
+    expect(mediumLogs).toHaveLength(1);
+    expect(mediumLogs).toContainEqual(newMediumLog);
+
+    const highLogs = await fileSaved.getLogs(LogSeverityLevel.HIGH);
+    expect(highLogs).toHaveLength(1);
+    expect(highLogs).toContainEqual(newHighLog);
+
+    const errorLogs = await fileSaved.getLogs(LogSeverityLevel.ERROR);
+    expect(errorLogs).toHaveLength(1);
+    expect(errorLogs).toContainEqual(newErrorLog);
+  });
+
+  it("should throw an error if Invalid severity level is passed", async () => {
+    const fileSaved: FileSystemDatasource = new FileSystemDatasource();
+    const customSeverityLevel = "NO_LEVEL" as LogSeverityLevel;
+    const newAllLog: LogEntity = new LogEntity({
+      level: customSeverityLevel,
+      message: "Test Two from LogDatasource test",
+      origin: "file-system.datasource.test.ts",
+    });
+    await fileSaved.saveLog(newAllLog);
+    try {
+      await fileSaved.getLogs(customSeverityLevel);
+    } catch (error) {
+      expect(error).toBeInstanceOf(Error);
+      console.debug(error);
+      expect(error).toHaveProperty(
+        "message",
+        `Invalid severity level. The ${customSeverityLevel}, is not valid`
+      );
+    }
   });
 });
