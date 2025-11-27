@@ -10,11 +10,11 @@ import { LogEntity, LogSeverityLevel } from "../../domain/entities/log.entity";
 
 export class FileSystemDatasource implements LogDatasources {
   private readonly logPath: string = "logs/";
-  private readonly allLogsPath: string = "logs/all-logs.log/";
-  private readonly lowLogsPath: string = "logs/low-logs.log/";
-  private readonly mediumLogsPath: string = "logs/medium-logs.log/";
-  private readonly highLogsPath: string = "logs/high-logs.log/";
-  private readonly errorLogsPath: string = "logs/error-logs.log/";
+  private readonly allLogsPath: string = "logs/all-logs.log";
+  private readonly lowLogsPath: string = "logs/low-logs.log";
+  private readonly mediumLogsPath: string = "logs/medium-logs.log";
+  private readonly highLogsPath: string = "logs/high-logs.log";
+  private readonly errorLogsPath: string = "logs/error-logs.log";
   private readonly logsLevelPaths: string[] = [
     this.allLogsPath,
     this.lowLogsPath,
@@ -34,7 +34,12 @@ export class FileSystemDatasource implements LogDatasources {
       }
 
       for (const path of this.logsLevelPaths) {
-        if (!existsSync(path)) return;
+        if (existsSync(path)) {
+          console.debug(path);
+          console.debug(existsSync(path));
+
+          return;
+        }
         writeFileSync(path, "");
       }
     } catch (error) {
