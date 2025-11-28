@@ -1,7 +1,7 @@
 import * as nodemailer from "nodemailer";
 import { envs } from "../../config/plugins/envs.plugins";
 
-interface SenMailOptions {
+export interface SenMailOptions {
   from: string;
   to: string | string[];
   subject: string;
@@ -9,7 +9,7 @@ interface SenMailOptions {
   attachments?: Attachment[];
 }
 
-interface Attachment {
+export interface Attachment {
   filename: string;
   path: string;
 }
@@ -29,7 +29,6 @@ export class EmailService {
 
   public async sendEmail(options: SenMailOptions): Promise<boolean> {
     const { from, htmlBody, subject, to, attachments = [] } = options;
-
     try {
       await this.transporter.sendMail({
         from,
