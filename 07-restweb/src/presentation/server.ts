@@ -1,27 +1,37 @@
-import express from "express";
+import express, { Router } from "express";
 import path from "node:path";
 
 interface Options {
   port: number;
+  routes: Router;
   public_path?: string;
 }
 
 export class ServerApp {
   private readonly app: express.Express = express();
   private readonly port: number;
+  private readonly routes: Router;
   private readonly publicPath: string;
 
   constructor(options: Options) {
-    const { port, public_path = "public" } = options;
+    const { port, public_path = "public", routes } = options;
     this.port = port;
+    this.routes = routes;
     this.publicPath = public_path;
   }
+
   public async start() {
     console.debug("server running");
 
-    // middlewares
-    // public folder
+    //* Middlewares
+
+    //* Public Folder
     this.app.use(express.static(this.publicPath));
+
+    //* ROUTES
+    this.app.use(this.routes);
+
+    //*SPA
     this.app.get("/{*any}", (req, res) => {
       const indexPath: string = path.join(
         __dirname,
