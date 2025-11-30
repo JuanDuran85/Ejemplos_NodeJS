@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../../data";
+import { CreateTodoDto } from "../../domain";
 
 type Todo = {
   completed: boolean;
@@ -8,12 +9,7 @@ type Todo = {
   task: string;
 };
 
-const todosToUse: Todo[] = [
-  { id: 1, task: "Learn TypeScript", completed: false, completedAt: null },
-  { id: 2, task: "Build a REST API", completed: true, completedAt: null },
-  { id: 3, task: "Write Unit Tests", completed: false, completedAt: null },
-];
-
+// This code needs to be refactored to add validation and logic, this is only a demo or basic implementation with not specific propose
 export class TodosController {
   public getTodos = async (
     req: Request,
@@ -40,21 +36,16 @@ export class TodosController {
       : res.status(404).json({ error: `Todo not found with id: ${id}` });
   };
 
-  public createTodo = async (req: Request, res: Response) => {
-    const {
-      completed = false,
-      task,
-      completedAt = null,
-    } = req.body as unknown as Todo;
+  public createTodo = async (
+    req: Request,
+    res: Response
+  ): Promise<Response<any, Record<string, any>> | undefined> => {
+    const [error, createTodoDto] = CreateTodoDto.createTodo(req.body);
 
-    if (!task) return res.status(400).json({ error: "Task is required" });
+    if (error) return res.status(400).json({ error });
 
     const newTodo: Todo = await prisma.todo.create({
-      data: {
-        task,
-        completed,
-        completedAt: completedAt ? new Date(completedAt) : null,
-      },
+      data: createTodoDto!,
     });
 
     res.json(newTodo);
