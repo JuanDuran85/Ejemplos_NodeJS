@@ -20,7 +20,7 @@ export class TodoEntity {
     return !!this.completedAt;
   }
 
-  public static fromObject(object: { [key: string]: unknown }) {
+  public static fromObject(object: { [key: string]: unknown }): TodoEntity {
     const { id, task, completedAt, completed } = object;
 
     if (!id) throw new Error("Id is required");
