@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../../data";
 import { CreateTodoDto } from "../../domain";
+import { UpdateTodoDto } from "../../domain/dtos";
 
 type Todo = {
   completed: boolean;
@@ -57,18 +58,17 @@ export class TodosController {
   ): Promise<Response<any, Record<string, any>> | undefined> => {
     let resultTodo: Todo;
     const id: number = Number(req.params?.id);
+    const [error, updateTodoDto] = UpdateTodoDto.updateTodo({
+      ...req.body,
+      id,
+    });
 
-    if (Number.isNaN(id))
-      return res.status(400).json({ error: "Invalid Id. It must be a number" });
-    // create all the validations for the fields to update
+    if (error) return res.status(400).json({ error });
+
     try {
       resultTodo = await prisma.todo.update({
         where: { id: Number(id) },
-        data: {
-          task: req.body.task,
-          completed: req.body.completed,
-          completedAt: req.body.completedAt,
-        },
+        data: updateTodoDto?.values!,
       });
     } catch (error) {
       console.error(String(error));

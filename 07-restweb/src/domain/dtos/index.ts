@@ -1,1 +1,1 @@
-export { CreateTodoDto } from "././todos";
+export { CreateTodoDto, UpdateTodoDto } from "./todos";
