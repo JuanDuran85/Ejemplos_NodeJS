@@ -162,3 +162,7 @@ postgres-test
 05-noc/.env.test
 07-restweb/keys/server.crt
 07-restweb/keys/server.key
+07-restweb/postgres
+07-restweb/postgres/base
+07-restweb/generated/prisma
+07-restweb/prisma/migrations

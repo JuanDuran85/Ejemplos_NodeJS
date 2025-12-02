@@ -1,99 +1,85 @@
 import { Request, Response } from "express";
+import {
+  CreateTodo,
+  CreateTodoDto,
+  DeleteTodo,
+  GetByIdTodo,
+  GetTodos,
+  TodoEntity,
+  TodoRepository,
+  UpdateTodo,
+  UpdateTodoDto,
+} from "../../domain";
 
-type Todo = {
-  id: number;
-  task: string;
-  completed: boolean;
-  completedAt: Date | null;
-};
-
-const todosToUse: Todo[] = [
-  { id: 1, task: "Learn TypeScript", completed: false, completedAt: null },
-  { id: 2, task: "Build a REST API", completed: true, completedAt: null },
-  { id: 3, task: "Write Unit Tests", completed: false, completedAt: null },
-];
-
+// This code needs to be refactored to add validation and logic, this is only a demo or basic implementation with not specific propose
 export class TodosController {
-  public getTodos = (
-    req: Request,
-    res: Response
-  ): Response<unknown, Record<string, unknown>> => {
-    return res.json(todosToUse);
+  private readonly todoRepository: TodoRepository;
+
+  constructor(todoRepositoryIn: TodoRepository) {
+    this.todoRepository = todoRepositoryIn;
+  }
+
+  public getTodos = (req: Request, res: Response): void => {
+    new GetTodos(this.todoRepository)
+      .execute()
+      .then((todo) => res.json(todo))
+      .catch((error) => res.status(400).json({ error }));
   };
 
-  public getTodosById: (req: Request, res: Response) => void = (
-    req: Request,
-    res: Response
-  ): Response<unknown, Record<string, unknown>> => {
+  public getTodosById = (req: Request, res: Response): void => {
     const id: number | string = Number(req.params?.id);
-    if (Number.isNaN(id))
-      return res.status(400).json({ error: "Invalid Id. It must be a number" });
 
-    const todoFound: Todo | undefined = todosToUse.find(
-      (todo: Todo) => todo.id === id
-    );
-    return todoFound
-      ? res.json(todoFound)
-      : res.status(404).json({ error: `Todo not found with id: ${id}` });
+    new GetByIdTodo(this.todoRepository)
+      .execute(id)
+      .then((todo) => res.json(todo))
+      .catch((error) => res.status(400).json({ error: String(error) }));
   };
 
-  public createTodo = (req: Request, res: Response) => {
-    const {
-      completed = false,
-      task,
-      completedAt = null,
-    } = req.body as unknown as Todo;
+  public createTodo = (
+    req: Request,
+    res: Response
+  ): Response<any, Record<string, any>> | undefined => {
+    const [error, createTodoDto] = CreateTodoDto.createTodo(req.body);
 
-    if (!task) return res.status(400).json({ error: "Task is required" });
-    const newTodo: Todo = {
-      id: todosToUse.length + 1,
-      task,
-      completed,
-      completedAt,
-    };
+    if (error) return res.status(400).json({ error });
 
-    todosToUse.push(newTodo);
-    res.json(newTodo);
+    new CreateTodo(this.todoRepository)
+      .execute(createTodoDto!)
+      .then((todo) => res.status(201).json(todo))
+      .catch((error) => res.status(400).json({ error }));
   };
 
-  public updateTodo = (req: Request, res: Response) => {
+  public updateTodo = (
+    req: Request,
+    res: Response
+  ): Response<any, Record<string, any>> | undefined => {
+    let resultTodo: TodoEntity;
     const id: number = Number(req.params?.id);
+    const [error, updateTodoDto] = UpdateTodoDto.updateTodo({
+      ...req.body,
+      id,
+    });
 
-    if (Number.isNaN(id))
-      return res.status(400).json({ error: "Invalid Id. It must be a number" });
+    if (error) return res.status(400).json({ error });
 
-    const todoFound: Todo | undefined = todosToUse.find(
-      (todo: Todo) => todo.id === id
-    );
-    if (!todoFound)
-      return res.status(404).json({ error: `Todo not found with id: ${id}` });
-
-    const { completed, task, completedAt } = req.body as unknown as Todo;
-
-    todoFound.task = task ?? todoFound.task;
-    todoFound.completed = completed ?? todoFound.completed;
-    completedAt === null
-      ? (todoFound.completedAt = null)
-      : (todoFound.completedAt = new Date(
-          completedAt ?? todoFound.completedAt
-        ));
-
-    res.json(todoFound);
+    new UpdateTodo(this.todoRepository)
+      .execute(updateTodoDto!)
+      .then((todo) => res.status(201).json(todo))
+      .catch((error) => res.status(400).json({ error }));
   };
 
-  public deleteTodo = (req: Request, res: Response) => {
+  public deleteTodo = (
+    req: Request,
+    res: Response
+  ): Response<unknown, Record<string, unknown>> | undefined => {
+    let todoFound: TodoEntity;
     const id: number = Number(req.params?.id);
     if (Number.isNaN(id))
       return res.status(400).json({ error: "Invalid Id. It must be a number" });
 
-    const todoFound: Todo | undefined = todosToUse.find(
-      (todo: Todo) => todo.id === id
-    );
-    if (!todoFound)
-      return res.status(404).json({ error: `Todo not found with id: ${id}` });
-
-    const indexToDelete: number = todosToUse.indexOf(todoFound);
-    todosToUse.splice(indexToDelete, 1);
-    res.json(todoFound);
+    new DeleteTodo(this.todoRepository)
+      .execute(id)
+      .then((todo) => res.status(201).json(todo))
+      .catch((error) => res.status(400).json({ error }));
   };
 }
