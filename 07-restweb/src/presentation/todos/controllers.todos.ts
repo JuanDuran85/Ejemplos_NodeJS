@@ -38,7 +38,8 @@ export class TodosController {
     if (Number.isNaN(id))
       return res.status(400).json({ error: "Invalid Id. It must be a number" });
     try {
-      const todoFoundById: TodoEntity | null = await this.todoRepository.findById(id);
+      const todoFoundById: TodoEntity | null =
+        await this.todoRepository.findById(id);
       return res.json(todoFoundById);
     } catch (error) {
       console.error(String(error));
@@ -64,7 +65,7 @@ export class TodosController {
     req: Request,
     res: Response
   ): Promise<Response<any, Record<string, any>> | undefined> => {
-    let resultTodo: Todo;
+    let resultTodo: TodoEntity;
     const id: number = Number(req.params?.id);
     const [error, updateTodoDto] = UpdateTodoDto.updateTodo({
       ...req.body,
@@ -74,30 +75,24 @@ export class TodosController {
     if (error) return res.status(400).json({ error });
 
     try {
-      resultTodo = await prisma.todo.update({
-        where: { id: Number(id) },
-        data: updateTodoDto?.values!,
-      });
+      resultTodo = await this.todoRepository.updateById(updateTodoDto!);
     } catch (error) {
-      console.error(String(error));
-      return res.status(404).json({ error: `Todo not found with id: ${id}` });
+      return res.status(404).json({ error });
     }
-    res.json(resultTodo);
+    return res.json(resultTodo);
   };
 
   public deleteTodo = async (
     req: Request,
     res: Response
   ): Promise<Response<unknown, Record<string, unknown>> | undefined> => {
-    let todoFound: Todo;
+    let todoFound: TodoEntity;
     const id: number = Number(req.params?.id);
     if (Number.isNaN(id))
       return res.status(400).json({ error: "Invalid Id. It must be a number" });
 
     try {
-      todoFound = await prisma.todo.delete({
-        where: { id: Number(id) },
-      });
+      todoFound = await this.todoRepository.deleteById(id);
     } catch (error) {
       console.debug(String(error));
       return res.status(404).json({ error: `Todo not found with id: ${id}` });
