@@ -2,6 +2,6 @@ export {
   CreateTodo,
   DeleteTodo,
   GetByIdTodo,
-  GetTodo,
+  GetTodos,
   UpdateTodo,
 } from "./todo";

@@ -6,6 +6,6 @@ export {
   CreateTodo,
   DeleteTodo,
   GetByIdTodo,
-  GetTodo,
+  GetTodos,
   UpdateTodo,
 } from "./use-cases";
