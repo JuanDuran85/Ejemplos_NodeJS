@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { prisma } from "../../data";
-import { CreateTodoDto } from "../../domain";
-import { UpdateTodoDto } from "../../domain/dtos";
+import {
+  CreateTodoDto,
+  TodoEntity,
+  TodoRepository,
+  UpdateTodoDto,
+} from "../../domain";
 
 type Todo = {
   completed: boolean;
@@ -12,11 +16,17 @@ type Todo = {
 
 // This code needs to be refactored to add validation and logic, this is only a demo or basic implementation with not specific propose
 export class TodosController {
+  private readonly todoRepository: TodoRepository;
+
+  constructor(todoRepositoryIn: TodoRepository) {
+    this.todoRepository = todoRepositoryIn;
+  }
+
   public getTodos = async (
     req: Request,
     res: Response
   ): Promise<Response<unknown, Record<string, unknown>>> => {
-    const todosFound: Todo[] = await prisma.todo.findMany();
+    const todosFound: TodoEntity[] = await this.todoRepository.getAll();
     return res.json(todosFound);
   };
 
@@ -27,14 +37,13 @@ export class TodosController {
     const id: number | string = Number(req.params?.id);
     if (Number.isNaN(id))
       return res.status(400).json({ error: "Invalid Id. It must be a number" });
-
-    const todoFound: Todo | null = await prisma.todo.findUnique({
-      where: { id: Number(id) },
-    });
-
-    return todoFound
-      ? res.json(todoFound)
-      : res.status(404).json({ error: `Todo not found with id: ${id}` });
+    try {
+      const todoFoundById: TodoEntity | null = await this.todoRepository.findById(id);
+      return res.json(todoFoundById);
+    } catch (error) {
+      console.error(String(error));
+      return res.status(404).json({ error: `Todo not found with id: ${id}` });
+    }
   };
 
   public createTodo = async (
@@ -45,11 +54,10 @@ export class TodosController {
 
     if (error) return res.status(400).json({ error });
 
-    const newTodo: Todo = await prisma.todo.create({
-      data: createTodoDto!,
-    });
-
-    res.json(newTodo);
+    const newTodo: TodoEntity = await this.todoRepository.create(
+      createTodoDto!
+    );
+    res.status(201).json(newTodo);
   };
 
   public updateTodo = async (
