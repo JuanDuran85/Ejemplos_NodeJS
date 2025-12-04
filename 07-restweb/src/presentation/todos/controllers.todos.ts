@@ -23,7 +23,7 @@ export class TodosController {
     new GetTodos(this.todoRepository)
       .execute()
       .then((todo) => res.json(todo))
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => res.status(400).json({ error: String(error) }));
   };
 
   public getTodosById = (req: Request, res: Response): void => {
@@ -46,7 +46,7 @@ export class TodosController {
     new CreateTodo(this.todoRepository)
       .execute(createTodoDto!)
       .then((todo) => res.status(201).json(todo))
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => res.status(400).json({ error: String(error) }));
   };
 
   public updateTodo = (
@@ -65,7 +65,7 @@ export class TodosController {
     new UpdateTodo(this.todoRepository)
       .execute(updateTodoDto!)
       .then((todo) => res.status(200).json(todo))
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => res.status(400).json({ error: String(error) }));
   };
 
   public deleteTodo = (
@@ -80,6 +80,6 @@ export class TodosController {
     new DeleteTodo(this.todoRepository)
       .execute(id)
       .then((todo) => res.status(201).json(todo))
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => res.status(400).json({ error: String(error) }));
   };
 }

@@ -119,10 +119,39 @@ describe("Router Test", () => {
       .set("Content-Type", "application/json")
       .expect(200);
 
-    console.debug(body);
     expect(body).toEqual({
       id,
       task: "New message from update",
+      completedAt: "2025-05-22T00:00:00.000Z",
+      completed: true,
+    });
+  });
+
+  it("should return 404 if TODO id not found", async () => {
+    const result = await request(testServer.app)
+      .put(`/api/todos/1`)
+      .send({ task: "New message from update", completedAt: "2025-05-22" })
+      .set("Content-Type", "application/json")
+      .expect(400);
+    expect(result.body).toEqual({
+      error: `Error: Todo with id 1 not found`,
+    });
+  });
+
+  it("should return an updated TODO only the date api/todos/:id", async () => {
+    const { id } = await prisma.todo.create({
+      data: todo1,
+    });
+
+    const { body } = await request(testServer.app)
+      .put(`/api/todos/${id}`)
+      .send({ completedAt: "2025-05-22" })
+      .set("Content-Type", "application/json")
+      .expect(200);
+
+    expect(body).toEqual({
+      id,
+      task: todo1.task,
       completedAt: "2025-05-22T00:00:00.000Z",
       completed: true,
     });
