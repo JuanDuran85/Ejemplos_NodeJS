@@ -1,6 +1,7 @@
 import express, { Router } from "express";
 import path from "node:path";
 import compression from "compression";
+import { IncomingMessage, Server, ServerResponse } from "node:http";
 
 interface Options {
   port: number;
@@ -9,10 +10,14 @@ interface Options {
 }
 
 export class ServerApp {
-  private readonly app: express.Express = express();
+  public readonly app: express.Express = express();
   private readonly port: number;
   private readonly routes: Router;
   private readonly publicPath: string;
+  private serverListener?: Server<
+    typeof IncomingMessage,
+    typeof ServerResponse
+  >;
 
   constructor(options: Options) {
     const { port, public_path = "public", routes } = options;
@@ -44,8 +49,12 @@ export class ServerApp {
       res.sendFile(indexPath);
     });
 
-    this.app.listen(this.port, () => {
+    this.serverListener = this.app.listen(this.port, () => {
       console.debug(`Server is listening on port ${this.port}`);
     });
+  }
+
+  public close() {
+    this.serverListener?.close();
   }
 }
