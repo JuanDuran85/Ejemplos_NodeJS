@@ -3,8 +3,8 @@ import request from "supertest";
 import { testServer } from "../../test-server";
 import { prisma } from "../../../src/data";
 
-const todo1 = { task: "Test Task 1" };
-const todo2 = { task: "Test Task 2" };
+const todo1 = { task: "Test Task 1", completedAt: null };
+const todo2 = { task: "Test Task 2", completedAt: null };
 
 describe("Router Test", () => {
   beforeAll(async () => {
