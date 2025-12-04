@@ -30,26 +30,31 @@ export class UpdateTodoDto {
   public static updateTodo(props: {
     [key: string]: unknown;
   }): [string?, UpdateTodoDto?] {
-    const { task, completed, completedAt, id } = props;
+    const { task, completed = false, completedAt = null, id } = props;
     let newCompletedAt: unknown = completedAt;
+    let newCompleted: unknown = completed;
 
     if (!id || typeof id !== "number" || Number.isNaN(id)) {
       return ["Id is required and must be a number"];
     }
-
-    if (typeof completed !== "boolean") {
-      return ["Completed must be a boolean"];
-    }
-
+    
     if (completedAt) {
       newCompletedAt = new Date(completedAt as string);
-      if (!(newCompletedAt instanceof Date))
+      if (!(newCompletedAt instanceof Date)) {
         return ["CompletedAt must be a Date"];
+      }
     }
+
+    newCompleted = completedAt ? true : completed;
 
     return [
       undefined,
-      new UpdateTodoDto(task as string, completed, newCompletedAt as Date, id),
+      new UpdateTodoDto(
+        task as string,
+        newCompleted as boolean,
+        newCompletedAt as Date,
+        id
+      ),
     ];
   }
 }

@@ -61,4 +61,70 @@ describe("Router Test", () => {
       completed,
     });
   });
+
+  it("should return a TODO api/todos/:id", async () => {
+    const id: number = 1;
+    const { body } = await request(testServer.app)
+      .get(`/api/todos/${id}`)
+      .set("Content-Type", "application/json")
+      .expect(400);
+
+    expect(body).toEqual({ error: `Error: Todo with id ${id} not found` });
+  });
+
+  it("should return a New TODO api/todos", async () => {
+    const { body } = await request(testServer.app)
+      .post("/api/todos")
+      .send(todo1)
+      .expect(201);
+
+    expect(body).toEqual({
+      id: expect.any(Number),
+      task: todo1.task,
+      completedAt: null,
+      completed: false,
+    });
+  });
+
+  it("should return an Error if text is not valid api/todos", async () => {
+    const { body } = await request(testServer.app)
+      .post("/api/todos")
+      .send({ task: "" })
+      .expect(400);
+
+    expect(body).toEqual({
+      error: "Task is required and must be a non empty string",
+    });
+  });
+
+  it("should return an Error if text is empty api/todos", async () => {
+    const { body } = await request(testServer.app)
+      .post("/api/todos")
+      .send({})
+      .expect(400);
+
+    expect(body).toEqual({
+      error: "Task is required and must be a non empty string",
+    });
+  });
+
+  it("should return an updated TODO api/todos/:id", async () => {
+    const { id } = await prisma.todo.create({
+      data: todo1,
+    });
+
+    const { body } = await request(testServer.app)
+      .put(`/api/todos/${id}`)
+      .send({ task: "New message from update", completedAt: "2025-05-22" })
+      .set("Content-Type", "application/json")
+      .expect(200);
+
+    console.debug(body);
+    expect(body).toEqual({
+      id,
+      task: "New message from update",
+      completedAt: "2025-05-22T00:00:00.000Z",
+      completed: true,
+    });
+  });
 });
