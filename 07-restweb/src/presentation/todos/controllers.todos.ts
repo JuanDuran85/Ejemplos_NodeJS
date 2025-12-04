@@ -79,7 +79,7 @@ export class TodosController {
 
     new DeleteTodo(this.todoRepository)
       .execute(id)
-      .then((todo) => res.status(201).json(todo))
+      .then((todo) => res.status(200).json(todo))
       .catch((error) => res.status(400).json({ error: String(error) }));
   };
 }

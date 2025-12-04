@@ -156,4 +156,28 @@ describe("Router Test", () => {
       completed: true,
     });
   });
+
+  it("should return an deleted TODO api/todos/:id", async () => {
+    const { id } = await prisma.todo.create({
+      data: todo1,
+    });
+
+    const { body } = await request(testServer.app)
+      .delete(`/api/todos/${id}`)
+      .set("Content-Type", "application/json")
+      .expect(200);
+
+    expect(body).toMatchObject(todo1);
+  });
+
+  it("should return an error on delete, if the TODO does not exist api/todos/:id", async () => {
+    const { body } = await request(testServer.app)
+      .delete(`/api/todos/11111`)
+      .set("Content-Type", "application/json")
+      .expect(400);
+
+    expect(body).toEqual({
+      error: "Error: Todo with id 11111 not found",
+    });
+  });
 });
