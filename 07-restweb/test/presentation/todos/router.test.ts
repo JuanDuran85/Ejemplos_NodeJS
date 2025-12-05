@@ -67,9 +67,9 @@ describe("Router Test", () => {
     const { body } = await request(testServer.app)
       .get(`/api/todos/${id}`)
       .set("Content-Type", "application/json")
-      .expect(400);
+      .expect(404);
 
-    expect(body).toEqual({ error: `Error: Todo with id ${id} not found` });
+    expect(body).toEqual({ error: `Todo with id ${id} not found` });
   });
 
   it("should return a New TODO api/todos", async () => {
@@ -132,9 +132,9 @@ describe("Router Test", () => {
       .put(`/api/todos/1`)
       .send({ task: "New message from update", completedAt: "2025-05-22" })
       .set("Content-Type", "application/json")
-      .expect(400);
+      .expect(404);
     expect(result.body).toEqual({
-      error: `Error: Todo with id 1 not found`,
+      error: `Todo with id 1 not found`,
     });
   });
 
@@ -174,10 +174,10 @@ describe("Router Test", () => {
     const { body } = await request(testServer.app)
       .delete(`/api/todos/11111`)
       .set("Content-Type", "application/json")
-      .expect(400);
+      .expect(404);
 
     expect(body).toEqual({
-      error: "Error: Todo with id 11111 not found",
+      error: "Todo with id 11111 not found",
     });
   });
 });
