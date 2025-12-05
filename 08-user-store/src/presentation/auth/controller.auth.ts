@@ -12,9 +12,6 @@ export class AuthController {
   };
 
   public validateEmail = (req: Request, res: Response): void => {
-    console.debug("validate email");
-    console.debug(req);
-    console.debug(res);
     res.json("validate-email");
   };
 }
