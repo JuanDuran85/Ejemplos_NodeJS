@@ -1,6 +1,7 @@
 import { prisma } from "../../data";
 import {
   CreateTodoDto,
+  CustomError,
   TodoDatasource,
   TodoEntity,
   UpdateTodoDto,
@@ -24,7 +25,7 @@ export class TodoDatasourceImpl implements TodoDatasource {
     const todoFound = await prisma.todo.findUnique({
       where: { id: Number(id) },
     });
-    if (!todoFound) throw new Error(`Todo with id ${id} not found`);
+    if (!todoFound) throw new CustomError(`Todo with id ${id} not found`, 404);
     return TodoEntity.fromObject(todoFound);
   }
 

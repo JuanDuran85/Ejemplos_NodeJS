@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {
   CreateTodo,
   CreateTodoDto,
+  CustomError,
   DeleteTodo,
   GetByIdTodo,
   GetTodos,
@@ -19,11 +20,23 @@ export class TodosController {
     this.todoRepository = todoRepositoryIn;
   }
 
+  private readonly handleError: (
+    res: Response<any, Record<string, any>>,
+    error: unknown
+  ) => void = (res: Response, error: unknown): void => {
+    if (error instanceof CustomError) {
+      res.status(error.statusCode).json({ error: error.message });
+      return;
+    }
+    console.error(String(error));
+    res.status(500).json({ error: "Internal server error" });
+  };
+
   public getTodos = (req: Request, res: Response): void => {
     new GetTodos(this.todoRepository)
       .execute()
       .then((todo) => res.json(todo))
-      .catch((error) => res.status(400).json({ error: String(error) }));
+      .catch((error) => this.handleError(res, error));
   };
 
   public getTodosById = (req: Request, res: Response): void => {
@@ -32,7 +45,7 @@ export class TodosController {
     new GetByIdTodo(this.todoRepository)
       .execute(id)
       .then((todo) => res.json(todo))
-      .catch((error) => res.status(400).json({ error: String(error) }));
+      .catch((error) => this.handleError(res, error));
   };
 
   public createTodo = (
@@ -46,7 +59,7 @@ export class TodosController {
     new CreateTodo(this.todoRepository)
       .execute(createTodoDto!)
       .then((todo) => res.status(201).json(todo))
-      .catch((error) => res.status(400).json({ error: String(error) }));
+      .catch((error) => this.handleError(res, error));
   };
 
   public updateTodo = (
@@ -65,7 +78,7 @@ export class TodosController {
     new UpdateTodo(this.todoRepository)
       .execute(updateTodoDto!)
       .then((todo) => res.status(200).json(todo))
-      .catch((error) => res.status(400).json({ error: String(error) }));
+      .catch((error) => this.handleError(res, error));
   };
 
   public deleteTodo = (
@@ -80,6 +93,6 @@ export class TodosController {
     new DeleteTodo(this.todoRepository)
       .execute(id)
       .then((todo) => res.status(200).json(todo))
-      .catch((error) => res.status(400).json({ error: String(error) }));
+      .catch((error) => this.handleError(res, error));
   };
 }
