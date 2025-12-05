@@ -1,23 +1,10 @@
-import { Router } from 'express';
-
-
-
+import { Router } from "express";
+import { AuthRoutes } from "./auth";
 
 export class AppRoutes {
-
-
   static get routes(): Router {
-
     const router: Router = Router();
-    
-    // Definir las rutas
-    // router.use('/api/todos', /*TodoRoutes.routes */ );
-
-
-
+    router.use("/api/auth", AuthRoutes.routes);
     return router;
   }
-
-
 }
-
