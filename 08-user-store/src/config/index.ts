@@ -1,1 +1,3 @@
-export { envs } from './envs';
+export { BcryptAdapter } from "./bcrypt.adapter";
+export { envs } from "./envs.adapter";
+
