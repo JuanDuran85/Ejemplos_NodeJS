@@ -2,14 +2,14 @@ import { CustomErrors } from "../errors";
 
 export class UserEntity {
   constructor(
-    private readonly id: string,
-    private readonly name: string,
-    private readonly email: string,
-    private readonly emailValidated: boolean,
-    private readonly password: string,
-    private readonly role: string,
-    private readonly status: string,
-    private readonly img?: string
+    public readonly id: string,
+    public readonly name: string,
+    public readonly email: string,
+    public readonly emailValidated: boolean,
+    public readonly password: string,
+    public readonly role: string,
+    public readonly status: string,
+    public readonly img?: string
   ) {}
 
   public static fromObject(object: { [key: string]: any }): UserEntity {
