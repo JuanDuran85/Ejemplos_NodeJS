@@ -2,20 +2,25 @@ import { regularExps } from "../../../utilities";
 
 export class RegisterUserDto {
   private constructor(
-    private readonly name: string,
-    private readonly email: string,
-    private readonly password: string
+    public readonly name: string,
+    public readonly email: string,
+    public readonly password: string
   ) {}
 
   public static createUser(object: {
     [key: string]: any;
   }): [string?, RegisterUserDto?] {
-    const { name, email, password } = object;
+    const {
+      name = undefined,
+      email = undefined,
+      password = undefined,
+    } = object || {};
 
     if (!name) return ["Missing name"];
-    if (!email || regularExps.email.test(email))
+    if (!email || !regularExps.email.test(email))
       return ["Missing or wrong email. Please check your email"];
-    if (!password) return ["Missing password"];
+    if (!password || password?.length < 5 ||!regularExps.password.test(password))
+      return ["Missing or Invalid password"];
 
     return [undefined, new RegisterUserDto(name, email, password)];
   }

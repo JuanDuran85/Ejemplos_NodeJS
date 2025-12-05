@@ -46,7 +46,6 @@ export class ServerApp {
         __dirname,
         `../../${this.publicPath}/index.html`
       );
-      console.debug(indexPath);
       res.sendFile(indexPath);
     });
 
