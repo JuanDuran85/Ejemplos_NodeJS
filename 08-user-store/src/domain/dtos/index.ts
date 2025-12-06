@@ -1,1 +1,1 @@
-export { RegisterUserDto } from "./auth";
+export { RegisterUserDto, LoginUserDto } from "./auth";

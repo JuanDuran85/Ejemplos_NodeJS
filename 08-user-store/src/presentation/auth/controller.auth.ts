@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CustomErrors, RegisterUserDto } from "../../domain";
+import { CustomErrors, LoginUserDto, RegisterUserDto } from "../../domain";
 import { AuthServices } from "../services";
 
 export class AuthController {
@@ -20,7 +20,6 @@ export class AuthController {
     req: Request,
     res: Response
   ): Response<unknown, Record<string, unknown>> | undefined => {
-    console.debug(req.body);
     const [error, registerUserDto] = RegisterUserDto.createUser(req.body);
 
     if (error) return res.status(400).json({ error });
@@ -30,11 +29,20 @@ export class AuthController {
       .catch((error) => this.handleError(error, res));
   };
 
-  public login: (req: Request, res: Response) => void = (
+  public login: (
     req: Request,
     res: Response
-  ): void => {
-    res.json("login");
+  ) => Response<any, Record<string, any>> | undefined = (
+    req: Request,
+    res: Response
+  ): Response<unknown, Record<string, unknown>> | undefined => {
+    const [error, loginUserDto] = LoginUserDto.loginUser(req.body);
+    if (error) return res.status(400).json({ error });
+
+    this.authServices
+      .loginUser(loginUserDto!)
+      .then((user) => res.json(user))
+      .catch((error) => this.handleError(error, res));
   };
 
   public validateEmail: (req: Request, res: Response) => void = (

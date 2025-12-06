@@ -7,6 +7,7 @@ export class RegisterUserDto {
     public readonly password: string
   ) {}
 
+  // It is necessary to validate the data with some library before creating the instance
   public static createUser(object: {
     [key: string]: any;
   }): [string?, RegisterUserDto?] {
