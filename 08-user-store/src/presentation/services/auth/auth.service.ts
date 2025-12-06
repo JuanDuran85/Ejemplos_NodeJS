@@ -98,4 +98,22 @@ export class AuthServices {
       token,
     };
   }
+
+  public async validateEmail(token: string): Promise<boolean> {
+    const payload: unknown = await this.jwtGeneratorAdapter.validateToken(
+      token
+    );
+    if (!payload) throw CustomErrors.unauthorizedRequest("Invalid token");
+    const { email } = payload as { email: string };
+    if (!email)
+      throw CustomErrors.internalServerErrorRequest("Email not found");
+
+    const user = await UserModel.findOne({ email });
+    if (!user) throw CustomErrors.internalServerErrorRequest("Email not found");
+
+    user.emailValidated = true;
+    await user.save();
+
+    return true;
+  }
 }
