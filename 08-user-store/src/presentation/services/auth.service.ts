@@ -8,7 +8,7 @@ import {
 } from "../../domain";
 
 export class AuthServices {
-  constructor(private readonly jwtSeed: string) {}
+  constructor(private readonly jwtGeneratorAdapter: JwtGeneratorAdapter) {}
   public async registerUser(registerUserDto: RegisterUserDto): Promise<{
     user: Partial<UserEntity>;
     token: string;
@@ -48,9 +48,7 @@ export class AuthServices {
 
     const { password, ...restUser } = UserEntity.fromObject(userFound);
 
-    const token: unknown = await new JwtGeneratorAdapter(
-      this.jwtSeed
-    ).generateToken({
+    const token: unknown = await this.jwtGeneratorAdapter.generateToken({
       id: restUser.id,
       email: restUser.email,
     });
