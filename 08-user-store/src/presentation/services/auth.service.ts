@@ -1,4 +1,4 @@
-import { BcryptAdapter } from "../../config";
+import { BcryptAdapter, JwtGeneratorAdapter } from "../../config";
 import { UserModel } from "../../data";
 import {
   CustomErrors,
@@ -8,6 +8,7 @@ import {
 } from "../../domain";
 
 export class AuthServices {
+  constructor(private readonly jwtSeed: string) {}
   public async registerUser(registerUserDto: RegisterUserDto): Promise<{
     user: Partial<UserEntity>;
     token: string;
@@ -34,7 +35,7 @@ export class AuthServices {
 
   public async loginUser(loginUserDto: LoginUserDto): Promise<{
     user: Partial<UserEntity>;
-    token: string;
+    token: unknown;
   }> {
     const message: string =
       "Something when wrong. Please check your email and password";
@@ -47,9 +48,18 @@ export class AuthServices {
 
     const { password, ...restUser } = UserEntity.fromObject(userFound);
 
+    const token: unknown = await new JwtGeneratorAdapter(
+      this.jwtSeed
+    ).generateToken({
+      id: restUser.id,
+      email: restUser.email,
+    });
+    if (!token)
+      throw CustomErrors.internalServerErrorRequest("Error generating token");
+
     return {
       user: restUser,
-      token: "ABCD",
+      token,
     };
   }
 }
