@@ -1,14 +1,21 @@
-import { BcryptAdapter, JwtGeneratorAdapter } from "../../config";
-import { UserModel } from "../../data";
+import { BcryptAdapter, JwtGeneratorAdapter } from "../../../config";
+import { UserModel } from "../../../data";
 import {
   CustomErrors,
   LoginUserDto,
   RegisterUserDto,
   UserEntity,
-} from "../../domain";
+} from "../../../domain";
 
 export class AuthServices {
   constructor(private readonly jwtGeneratorAdapter: JwtGeneratorAdapter) {}
+
+  private async generateTokenById(id: string): Promise<string> {
+    return (await this.jwtGeneratorAdapter.generateToken({
+      id,
+    })) as string;
+  }
+
   public async registerUser(registerUserDto: RegisterUserDto): Promise<{
     user: Partial<UserEntity>;
     token: string;
@@ -23,9 +30,13 @@ export class AuthServices {
 
       const { password, ...restUserEntity } = UserEntity.fromObject(user);
 
+      const token: string = await this.generateTokenById(user.id);
+      if (!token)
+        throw CustomErrors.internalServerErrorRequest("Error generating token");
+
       return {
         user: restUserEntity,
-        token: "ABCD",
+        token,
       };
     } catch (error) {
       console.debug(String(error));
@@ -35,7 +46,7 @@ export class AuthServices {
 
   public async loginUser(loginUserDto: LoginUserDto): Promise<{
     user: Partial<UserEntity>;
-    token: unknown;
+    token: string;
   }> {
     const message: string =
       "Something when wrong. Please check your email and password";
@@ -48,10 +59,7 @@ export class AuthServices {
 
     const { password, ...restUser } = UserEntity.fromObject(userFound);
 
-    const token: unknown = await this.jwtGeneratorAdapter.generateToken({
-      id: restUser.id,
-      email: restUser.email,
-    });
+    const token: string = await this.generateTokenById(userFound.id);
     if (!token)
       throw CustomErrors.internalServerErrorRequest("Error generating token");
 
