@@ -6,14 +6,44 @@ import {
   RegisterUserDto,
   UserEntity,
 } from "../../../domain";
+import { EmailService } from "../email";
 
 export class AuthServices {
-  constructor(private readonly jwtGeneratorAdapter: JwtGeneratorAdapter) {}
+  constructor(
+    private readonly emailService: EmailService,
+    private readonly jwtGeneratorAdapter: JwtGeneratorAdapter,
+    private readonly totalEnvs: { [key: string]: string | number }
+  ) {}
 
-  private async generateTokenById(id: string): Promise<string> {
+  private async generateTokenByOneProperty(property: string): Promise<string> {
     return (await this.jwtGeneratorAdapter.generateToken({
-      id,
+      property,
     })) as string;
+  }
+
+  private async sendEmailValidationLink(email: string): Promise<boolean> {
+    const token: string = await this.generateTokenByOneProperty(email);
+    if (!token)
+      throw CustomErrors.internalServerErrorRequest("Error generating token");
+
+    const link: string = `${this.totalEnvs["WEB_SERVICE_URL"]}/auth/validate-email/${token}`;
+    const html: string = `
+      <h1>Validate your email</h1>
+      <p>Click on the following link to validate your email</p>
+      <a href="${link}">Validate your email: ${email}</a>
+    `;
+
+    const options = {
+      from: this.totalEnvs["EMAIL_SERVICE"] as string,
+      to: email,
+      subject: "Validate your email",
+      htmlBody: html,
+    };
+    const isSet: boolean = await this.emailService.sendEmail(options);
+    if (!isSet)
+      throw CustomErrors.internalServerErrorRequest("Error sending email");
+
+    return true;
   }
 
   public async registerUser(registerUserDto: RegisterUserDto): Promise<{
@@ -27,10 +57,10 @@ export class AuthServices {
       const user = new UserModel(registerUserDto);
       user.password = BcryptAdapter.hash(registerUserDto.password);
       await user.save();
-
+      await this.sendEmailValidationLink(user.email);
       const { password, ...restUserEntity } = UserEntity.fromObject(user);
 
-      const token: string = await this.generateTokenById(user.id);
+      const token: string = await this.generateTokenByOneProperty(user.id);
       if (!token)
         throw CustomErrors.internalServerErrorRequest("Error generating token");
 
@@ -59,7 +89,7 @@ export class AuthServices {
 
     const { password, ...restUser } = UserEntity.fromObject(userFound);
 
-    const token: string = await this.generateTokenById(userFound.id);
+    const token: string = await this.generateTokenByOneProperty(userFound.id);
     if (!token)
       throw CustomErrors.internalServerErrorRequest("Error generating token");
 

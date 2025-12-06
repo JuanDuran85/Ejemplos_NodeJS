@@ -13,14 +13,20 @@ export interface Attachment {
   path: string;
 }
 
+type MailerToUse = {
+  mailerService: string;
+  mailerEmailName: string;
+  mailerKey: string;
+};
+
 export class EmailService {
   private readonly transporter: nodemailer.Transporter;
 
-  constructor(mailService: string, mailerEmail: string, mailerKey: string) {
+  constructor({ mailerService, mailerEmailName, mailerKey }: MailerToUse) {
     this.transporter = nodemailer.createTransport({
-      service: mailService,
+      service: mailerService,
       auth: {
-        user: mailerEmail,
+        user: mailerEmailName,
         pass: mailerKey,
       },
       tls: {
@@ -39,6 +45,7 @@ export class EmailService {
         html: htmlBody,
         attachments,
       });
+      console.debug("sending email...");
       return true;
     } catch (error) {
       const errorMessage: string = `Error: ${error}. Please check email service.`;
