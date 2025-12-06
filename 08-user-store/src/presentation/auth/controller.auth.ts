@@ -48,7 +48,8 @@ export class AuthController {
   public validateEmail: (req: Request, res: Response) => void = (
     req: Request,
     res: Response
-  ): void => {
-    res.json("validate-email");
+  ) => {
+    const { token } = req.params;
+    res.json(token);
   };
 }
