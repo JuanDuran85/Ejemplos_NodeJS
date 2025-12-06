@@ -36,12 +36,14 @@ export class AuthServices {
     user: Partial<UserEntity>;
     token: string;
   }> {
+    const message: string =
+      "Something when wrong. Please check your email and password";
     const userFound = await UserModel.findOne({ email: loginUserDto.email });
 
-    if (!userFound) throw CustomErrors.notFoundRequest("Are you registered?");
+    if (!userFound) throw CustomErrors.badRequest(message);
 
     if (!BcryptAdapter.compare(loginUserDto.password, userFound.password))
-      throw CustomErrors.unauthorizedRequest("Invalid password");
+      throw CustomErrors.unauthorizedRequest(message);
 
     const { password, ...restUser } = UserEntity.fromObject(userFound);
 
