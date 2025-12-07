@@ -1,21 +1,35 @@
 import jwt from "jsonwebtoken";
 
 export class JwtGeneratorAdapter {
-  constructor(private readonly jwtSeed: string) {}
+  constructor(private readonly totalEnvs: { [key: string]: string | number }) {}
 
   public async generateToken(
     payload: any,
     duration: number | `${number}${"s" | "m" | "h" | "d"}` = "2h"
-  ) {
+  ): Promise<unknown> {
     return new Promise((resolve) => {
-      jwt.sign(payload, this.jwtSeed, { expiresIn: duration }, (err, token) => {
-        if (err) return resolve(null);
-        resolve(token);
-      });
+      jwt.sign(
+        payload,
+        this.totalEnvs["JWT_SEED"] as string,
+        { expiresIn: duration },
+        (err, token) => {
+          if (err) return resolve(null);
+          resolve(token);
+        }
+      );
     });
   }
 
-  public async validateToken(token: string) {
-    return;
+  public async validateToken(token: string): Promise<unknown> {
+    return new Promise((resolve) => {
+      jwt.verify(
+        token,
+        this.totalEnvs["JWT_SEED"] as string,
+        (err, decoded) => {
+          if (err) return resolve(null);
+          resolve(decoded);
+        }
+      );
+    });
   }
 }
