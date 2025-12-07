@@ -1,5 +1,10 @@
 import { CategoryModel } from "../../../data";
-import { CreateCategoryDto, CustomErrors, UserEntity } from "../../../domain";
+import {
+  CreateCategoryDto,
+  CustomErrors,
+  PaginationDto,
+  UserEntity,
+} from "../../../domain";
 
 export class CategoryService {
   public async createCategory(
@@ -34,23 +39,34 @@ export class CategoryService {
     }
   }
 
-  public async getAllCategories(): Promise<
-    {
-      id: string;
-      name: string;
-      available: boolean;
-    }[]
-  > {
-    try {
-      const categoriesFound = await CategoryModel.find();
+  public async getAllCategories(paginationDto: PaginationDto) {
+    const { page, limit } = paginationDto;
 
-      return categoriesFound.map((category) => {
-        return {
-          id: category.id,
-          name: category.name,
-          available: category.available,
-        };
-      });
+    try {
+      const [total, categoriesFound] = await Promise.all([
+        CategoryModel.countDocuments(),
+        CategoryModel.find()
+          .skip((page - 1) * limit)
+          .limit(limit),
+      ]);
+      const next = `/api/categories?page=${page + 1}&limit=${limit}`;
+      const prev =
+        page - 1 > 0 ? `/api/categories?page=${page - 1}&limit=${limit}` : null;
+
+      return {
+        page,
+        limit,
+        total,
+        next,
+        prev,
+        categories: categoriesFound.map((category) => {
+          return {
+            id: category.id,
+            name: category.name,
+            available: category.available,
+          };
+        }),
+      };
     } catch (error) {
       console.error(String(error));
       throw CustomErrors.internalServerErrorRequest("Error getting categories");
