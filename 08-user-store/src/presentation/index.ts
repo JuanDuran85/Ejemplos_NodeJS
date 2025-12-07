@@ -5,7 +5,7 @@ export { ServerApp } from "./server";
 export {
   Attachment,
   AuthServices,
+  CategoryService,
   EmailService,
-  SenMailOptions
+  SenMailOptions,
 } from "./services";
-
