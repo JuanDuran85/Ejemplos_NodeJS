@@ -1,1 +1,2 @@
-export { MongoDataBase, UserModel } from "./mongo";
+export { CategoryModel, MongoDataBase, ProductModel, UserModel } from "./mongo";
+

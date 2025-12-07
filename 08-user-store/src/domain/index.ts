@@ -1,3 +1,4 @@
-export { CustomErrors } from "./errors";
+export { CreateCategoryDto, LoginUserDto, PaginationDto, RegisterUserDto } from "./dtos";
 export { UserEntity } from "./entities";
-export { RegisterUserDto, LoginUserDto } from "./dtos";
+export { CustomErrors, HandleError } from "./errors";
+

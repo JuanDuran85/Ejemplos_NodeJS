@@ -1,7 +1,9 @@
 import jwt from "jsonwebtoken";
 
 export class JwtGeneratorAdapter {
-  constructor(private readonly totalEnvs: { [key: string]: string | number }) {}
+  constructor(
+    private readonly totalEnvs: { [key: string]: string | number | boolean }
+  ) {}
 
   public async generateToken(
     payload: any,
@@ -20,14 +22,14 @@ export class JwtGeneratorAdapter {
     });
   }
 
-  public async validateToken(token: string): Promise<unknown> {
+  public async validateToken<T>(token: string): Promise<T | null > {
     return new Promise((resolve) => {
       jwt.verify(
         token,
         this.totalEnvs["JWT_SEED"] as string,
         (err, decoded) => {
           if (err) return resolve(null);
-          resolve(decoded);
+          resolve(decoded as T);
         }
       );
     });

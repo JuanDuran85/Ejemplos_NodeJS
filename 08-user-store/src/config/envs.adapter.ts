@@ -14,4 +14,5 @@ export const envs = {
   EMAIL_NAME: get("EMAIL_NAME").required().asString(),
   EMAIL_KEY: get("EMAIL_KEY").required().asString(),
   WEB_SERVICE_URL: get("WEB_SERVICE_URL").required().asString(),
+  SEND_EMAIL: get("SEND_EMAIL").default("false").asBool(),
 };

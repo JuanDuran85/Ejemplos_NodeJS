@@ -1,17 +1,9 @@
 import { Request, Response } from "express";
-import { CustomErrors, LoginUserDto, RegisterUserDto } from "../../domain";
+import { HandleError, LoginUserDto, RegisterUserDto } from "../../domain";
 import { AuthServices } from "../services";
 
 export class AuthController {
   constructor(public readonly authServices: AuthServices) {}
-
-  private readonly handleError = (error: unknown, res: Response) => {
-    if (error instanceof CustomErrors) {
-      return res.status(error.statusCode).json({ error: error.message });
-    }
-    console.error(String(error));
-    return res.status(500).json({ error: "Internal server error" });
-  };
 
   public register: (
     req: Request,
@@ -26,7 +18,7 @@ export class AuthController {
     this.authServices
       .registerUser(registerUserDto!)
       .then((user) => res.json(user))
-      .catch((error) => this.handleError(error, res));
+      .catch((error) => HandleError.handleError(error, res));
   };
 
   public login: (
@@ -42,7 +34,7 @@ export class AuthController {
     this.authServices
       .loginUser(loginUserDto!)
       .then((user) => res.json(user))
-      .catch((error) => this.handleError(error, res));
+      .catch((error) => HandleError.handleError(error, res));
   };
 
   public validateEmail: (req: Request, res: Response) => void = (
@@ -55,6 +47,6 @@ export class AuthController {
       .then(() => {
         res.json("Email was Validated properly");
       })
-      .catch((error) => this.handleError(error, res));
+      .catch((error) => HandleError.handleError(error, res));
   };
 }

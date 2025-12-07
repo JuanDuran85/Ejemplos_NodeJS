@@ -1,2 +1,3 @@
 export { AuthServices } from "./auth";
-export { EmailService, SenMailOptions, Attachment } from "./email";
+export { CategoryService } from "./category";
+export { Attachment, EmailService, SenMailOptions } from "./email";
