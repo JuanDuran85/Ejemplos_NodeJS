@@ -3,7 +3,7 @@ import { AuthController } from "./controller.auth";
 import { AuthServices, EmailService } from "../services";
 import { envs, JwtGeneratorAdapter } from "../../config";
 
-const totalEnvs: { [key: string]: string | number } = envs;
+const totalEnvs: { [key: string]: string | number | boolean } = envs;
 
 export class AuthRoutes {
   static get routes(): Router {
@@ -15,6 +15,7 @@ export class AuthRoutes {
       mailerService: String(totalEnvs["EMAIL_SERVICE"] as string),
       mailerEmailName: String(totalEnvs["EMAIL_NAME"]),
       mailerKey: String(totalEnvs["EMAIL_KEY"] as string),
+      postToProvider: Boolean(totalEnvs["SEND_EMAIL"]),
     });
     const authService: AuthServices = new AuthServices(
       emailService,

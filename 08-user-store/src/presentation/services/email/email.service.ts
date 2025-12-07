@@ -17,12 +17,19 @@ type MailerToUse = {
   mailerService: string;
   mailerEmailName: string;
   mailerKey: string;
+  postToProvider: boolean;
 };
 
 export class EmailService {
   private readonly transporter: nodemailer.Transporter;
+  private readonly postToProvider: boolean;
 
-  constructor({ mailerService, mailerEmailName, mailerKey }: MailerToUse) {
+  constructor({
+    mailerService,
+    mailerEmailName,
+    mailerKey,
+    postToProvider,
+  }: MailerToUse) {
     this.transporter = nodemailer.createTransport({
       service: mailerService,
       auth: {
@@ -33,11 +40,13 @@ export class EmailService {
         rejectUnauthorized: false,
       },
     });
+    this.postToProvider = postToProvider;
   }
 
   public async sendEmail(options: SenMailOptions): Promise<boolean> {
     const { from, htmlBody, subject, to, attachments = [] } = options;
     try {
+      if (!this.postToProvider) return true;
       await this.transporter.sendMail({
         from,
         to,

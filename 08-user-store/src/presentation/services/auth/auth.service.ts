@@ -12,7 +12,7 @@ export class AuthServices {
   constructor(
     private readonly emailService: EmailService,
     private readonly jwtGeneratorAdapter: JwtGeneratorAdapter,
-    private readonly totalEnvs: { [key: string]: string | number }
+    private readonly totalEnvs: { [key: string]: string | number | boolean }
   ) {}
 
   private async generateTokenByOneProperty(property: string): Promise<string> {

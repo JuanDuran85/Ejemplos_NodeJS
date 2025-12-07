@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Name is requiredq"],
+    required: [true, "Name is required"],
   },
   email: {
     type: String,
-    required: [true, "Email is requiredq"],
+    required: [true, "Email is required"],
     unique: true,
   },
   emailValidated: {
@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, "Password is requiredq"],
+    required: [true, "Password is required"],
   },
   img: {
     type: String,

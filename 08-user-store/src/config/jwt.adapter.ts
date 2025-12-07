@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 export class JwtGeneratorAdapter {
-  constructor(private readonly totalEnvs: { [key: string]: string | number }) {}
+  constructor(private readonly totalEnvs: { [key: string]: string | number | boolean }) {}
 
   public async generateToken(
     payload: any,
