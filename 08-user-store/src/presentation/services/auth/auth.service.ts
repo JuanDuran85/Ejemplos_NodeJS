@@ -15,14 +15,16 @@ export class AuthServices {
     private readonly totalEnvs: { [key: string]: string | number | boolean }
   ) {}
 
-  private async generateTokenByOneProperty(property: string): Promise<string> {
+  private async generateTokenByProperties(object: {
+    [key: string]: string;
+  }): Promise<string> {
     return (await this.jwtGeneratorAdapter.generateToken({
-      property,
+      properties: object,
     })) as string;
   }
 
   private async sendEmailValidationLink(email: string): Promise<boolean> {
-    const token: string = await this.generateTokenByOneProperty(email);
+    const token: string = await this.generateTokenByProperties({ email });
     if (!token)
       throw CustomErrors.internalServerErrorRequest("Error generating token");
 
@@ -60,7 +62,10 @@ export class AuthServices {
       await this.sendEmailValidationLink(user.email);
       const { password, ...restUserEntity } = UserEntity.fromObject(user);
 
-      const token: string = await this.generateTokenByOneProperty(user.email);
+      const token: string = await this.generateTokenByProperties({
+        id: user.id,
+        email: user.email,
+      });
       if (!token)
         throw CustomErrors.internalServerErrorRequest("Error generating token");
 
@@ -89,9 +94,10 @@ export class AuthServices {
 
     const { password, ...restUser } = UserEntity.fromObject(userFound);
 
-    const token: string = await this.generateTokenByOneProperty(
-      userFound.email
-    );
+    const token: string = await this.generateTokenByProperties({
+      id: userFound.id,
+      email: userFound.email,
+    });
     if (!token)
       throw CustomErrors.internalServerErrorRequest("Error generating token");
 
@@ -110,7 +116,10 @@ export class AuthServices {
       throw CustomErrors.unauthorizedRequest("Invalid token");
     }
 
-    const { property: email } = payload as { property: string };
+    const {
+      properties: { email },
+    } = payload as { properties: { email: string; id: string } };
+
     if (!email)
       throw CustomErrors.internalServerErrorRequest("Email not found");
 
