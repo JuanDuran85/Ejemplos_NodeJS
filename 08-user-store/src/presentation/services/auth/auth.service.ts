@@ -60,7 +60,7 @@ export class AuthServices {
       await this.sendEmailValidationLink(user.email);
       const { password, ...restUserEntity } = UserEntity.fromObject(user);
 
-      const token: string = await this.generateTokenByOneProperty(user.id);
+      const token: string = await this.generateTokenByOneProperty(user.email);
       if (!token)
         throw CustomErrors.internalServerErrorRequest("Error generating token");
 
@@ -89,7 +89,9 @@ export class AuthServices {
 
     const { password, ...restUser } = UserEntity.fromObject(userFound);
 
-    const token: string = await this.generateTokenByOneProperty(userFound.id);
+    const token: string = await this.generateTokenByOneProperty(
+      userFound.email
+    );
     if (!token)
       throw CustomErrors.internalServerErrorRequest("Error generating token");
 
@@ -103,8 +105,12 @@ export class AuthServices {
     const payload: unknown = await this.jwtGeneratorAdapter.validateToken(
       token
     );
-    if (!payload) throw CustomErrors.unauthorizedRequest("Invalid token");
-    const { email } = payload as { email: string };
+
+    if (!payload) {
+      throw CustomErrors.unauthorizedRequest("Invalid token");
+    }
+
+    const { property: email } = payload as { property: string };
     if (!email)
       throw CustomErrors.internalServerErrorRequest("Email not found");
 

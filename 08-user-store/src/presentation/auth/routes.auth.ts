@@ -3,7 +3,6 @@ import { AuthController } from "./controller.auth";
 import { AuthServices, EmailService } from "../services";
 import { envs, JwtGeneratorAdapter } from "../../config";
 
-const jwtSeed: string = envs.JWT_SEED;
 const totalEnvs: { [key: string]: string | number } = envs;
 
 export class AuthRoutes {
