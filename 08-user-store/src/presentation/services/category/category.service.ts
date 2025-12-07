@@ -5,7 +5,11 @@ export class CategoryService {
   public async createCategory(
     createCategoryDto: CreateCategoryDto,
     user: UserEntity
-  ) {
+  ): Promise<{
+    id: string;
+    name: string;
+    available: boolean;
+  }> {
     const { name, available } = createCategoryDto;
 
     const categoryExist = await CategoryModel.findOne({ name });
@@ -27,6 +31,29 @@ export class CategoryService {
     } catch (error) {
       console.error(String(error));
       throw CustomErrors.internalServerErrorRequest("Error creating category");
+    }
+  }
+
+  public async getAllCategories(): Promise<
+    {
+      id: string;
+      name: string;
+      available: boolean;
+    }[]
+  > {
+    try {
+      const categoriesFound = await CategoryModel.find();
+
+      return categoriesFound.map((category) => {
+        return {
+          id: category.id,
+          name: category.name,
+          available: category.available,
+        };
+      });
+    } catch (error) {
+      console.error(String(error));
+      throw CustomErrors.internalServerErrorRequest("Error getting categories");
     }
   }
 }
