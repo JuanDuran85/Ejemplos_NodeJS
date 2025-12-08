@@ -23,8 +23,11 @@ export class FileUploadService {
         folder
       );
       this.checkFolder(destination);
-
-      file.mv(`${destination}/image-${file.name}.${fileExtension}`)
+      const fileName: string = `${file?.name?.split(".").at(0)}` || "thumbnail";
+      if (!validExtensions.includes(fileExtension)) {
+        throw CustomErrors.badRequest("Invalid file extension");
+      }
+      file.mv(`${destination}/image-${fileName}.${fileExtension}`);
       console.debug(`${destination}/image-${file.name}.${fileExtension}`);
     } catch (error) {
       console.error(String(error));
