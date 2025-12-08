@@ -28,7 +28,9 @@ export class ProductsService {
         ProductModel.countDocuments(),
         ProductModel.find()
           .skip((page - 1) * limit)
-          .limit(limit),
+          .limit(limit)
+          .populate("user", "name email")
+          .populate("category"),
       ]);
       const next: string = `/api/categories?page=${page + 1}&limit=${limit}`;
       const prev: string | null =
