@@ -6,7 +6,10 @@ export class ProductController {
   constructor(private readonly productService: ProductsService) {}
 
   public createProduct = async (req: Request, res: Response) => {
-    const [error, createProductDto] = CreateProductDto.createProduct(req.body);
+    const [error, createProductDto] = CreateProductDto.createProduct({
+      ...req.body,
+      user: req.body.user.id,
+    });
     if (error) return res.status(400).json({ error });
 
     this.productService

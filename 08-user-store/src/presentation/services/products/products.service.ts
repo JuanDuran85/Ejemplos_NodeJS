@@ -2,8 +2,6 @@ import { ProductModel } from "../../../data";
 import { CreateProductDto, CustomErrors, PaginationDto } from "../../../domain";
 
 export class ProductsService {
-  constructor() {}
-
   public async createProduct(createProductDto: CreateProductDto) {
     const productExist = await ProductModel.findOne({
       name: createProductDto.name,
