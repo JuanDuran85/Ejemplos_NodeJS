@@ -1,9 +1,42 @@
+import { UploadedFile } from "express-fileupload";
+import path from "node:path";
+import * as fs from "node:fs";
+import { CustomErrors } from "../../../domain";
+
 export class FileUploadService {
   private checkFolder(folderPath: string) {
-    throw new Error("Method not implemented.");
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath);
+    }
   }
 
-  public uploadSingle() {}
+  public async uploadSingle(
+    file: UploadedFile,
+    folder: string = "uploads",
+    validExtensions: string[] = ["png", "jpg", "jpeg", "gif"]
+  ) {
+    try {
+      const fileExtension: string = file.mimetype.split("/").at(1) || "";
+      const destination: string = path.resolve(
+        __dirname,
+        "../../../../",
+        folder
+      );
+      this.checkFolder(destination);
 
-  public uploadMultiple() {}
+      file.mv(`${destination}/image-${file.name}.${fileExtension}`)
+      console.debug(`${destination}/image-${file.name}.${fileExtension}`);
+    } catch (error) {
+      console.error(String(error));
+      throw CustomErrors.internalServerErrorRequest("Error uploading file");
+    }
+  }
+
+  public uploadMultiple(
+    file: [UploadedFile],
+    folder: string = "uploads",
+    validExtensions: string[] = ["png", "jpg", "jpeg", "gif"]
+  ) {
+    console.debug("uploadMultipleFiles");
+  }
 }

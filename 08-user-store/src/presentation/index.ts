@@ -10,6 +10,7 @@ export {
   AuthServices,
   CategoryService,
   EmailService,
-  SenMailOptions
+  FileUploadService,
+  ProductsService,
+  SenMailOptions,
 } from "./services";
-
