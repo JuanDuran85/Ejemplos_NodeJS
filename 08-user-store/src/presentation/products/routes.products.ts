@@ -1,11 +1,15 @@
 import { Router } from "express";
 import { ProductController } from "./controller.products";
 import { AuthMiddleware } from "../middlewares";
+import { ProductsService } from "../services";
 
 export class ProductRoutes {
   public static get routes(): Router {
     const router: Router = Router();
-    const productController: ProductController = new ProductController();
+    const productService: ProductsService = new ProductsService();
+    const productController: ProductController = new ProductController(
+      productService
+    );
     router.get("/", productController.getAllProducts);
     router.post(
       "/",
