@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
-interface OptionsConnexion {
+interface OptionsConnection {
   mongoUrl: string;
   dbName: string;
 }
 
 export class MongoDataBase {
-  public static async connect(options: OptionsConnexion) {
+  public static async connect(options: OptionsConnection) {
     const { dbName, mongoUrl } = options;
     try {
       await mongoose.connect(mongoUrl, {

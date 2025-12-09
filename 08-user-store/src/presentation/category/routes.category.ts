@@ -6,7 +6,7 @@ import { CategoryService } from "../services";
 
 const totalEnvs: { [key: string]: string | number | boolean } = envs;
 export class CategoryRoutes {
-  static get routes(): Router {
+  public static get routes(): Router {
     const router: Router = Router();
     const categoryService: CategoryService = new CategoryService();
     const categoryController: CategoryController = new CategoryController(

@@ -49,8 +49,8 @@ export class CategoryService {
           .skip((page - 1) * limit)
           .limit(limit),
       ]);
-      const next = `/api/categories?page=${page + 1}&limit=${limit}`;
-      const prev =
+      const next: string = `/api/categories?page=${page + 1}&limit=${limit}`;
+      const prev: string | null =
         page - 1 > 0 ? `/api/categories?page=${page - 1}&limit=${limit}` : null;
 
       return {

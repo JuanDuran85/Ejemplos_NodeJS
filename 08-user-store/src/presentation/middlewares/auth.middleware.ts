@@ -10,6 +10,7 @@ export class AuthMiddleware {
     res: Response,
     next: NextFunction
   ) {
+    if (!req.body) return res.status(400).json({ error: "Body is required" });
     const authorization: string | undefined = req.header("Authorization");
     if (!authorization)
       return res.status(401).json({ error: "No token provided" });
