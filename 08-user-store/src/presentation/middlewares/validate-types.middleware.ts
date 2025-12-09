@@ -1,24 +1,23 @@
 import { NextFunction, Request, Response } from "express";
 
 export class ValidateTypesMiddleware {
-  public static validateTypes(req: Request, res: Response, next: NextFunction) {    
-    const type: string = req.url.split("/").at(2) || "";
-    const validTypes: string[] = ["users", "products", "categories"];
-    
-    if (!req.body) {
-      req.body = {};
-    }
+  public static validateTypes(checkTypes: string[]) {
+    return (req: Request, res: Response, next: NextFunction) => {
+      const type: string = req.url.split("/").at(2) || "";
 
-    console.debug({type});
+      if (!req.body) {
+        req.body = {};
+      }
 
-    if (!validTypes.includes(type)) {
-      return res.status(400).json({
-        error: `Invalid type ${type}. Valid types: ${validTypes.join(", ")}`,
-      });
-    }
+      if (!checkTypes.includes(type)) {
+        return res.status(400).json({
+          error: `Invalid type ${type}. Valid types: ${checkTypes.join(", ")}`,
+        });
+      }
 
-    req.body.type = type;
+      req.body.type = type;
 
-    next();
+      next();
+    };
   }
 }
