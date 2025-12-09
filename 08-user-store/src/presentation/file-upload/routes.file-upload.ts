@@ -17,7 +17,9 @@ export class FileUploadRoutes {
     );
 
     router.use(FileUploadMiddleware.containFiles);
-    router.use(ValidateTypesMiddleware.validateTypes);
+    router.use(
+      ValidateTypesMiddleware.validateTypes(["users", "products", "categories"])
+    );
     router.post("/single/:type", fileUploadController.uploadFile);
     router.post("/multiple/:type", fileUploadController.uploadMultipleFiles);
     return router;
