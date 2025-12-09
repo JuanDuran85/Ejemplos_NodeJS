@@ -6,7 +6,7 @@ import { envs, JwtGeneratorAdapter } from "../../config";
 const totalEnvs: { [key: string]: string | number | boolean } = envs;
 
 export class AuthRoutes {
-  static get routes(): Router {
+  public static get routes(): Router {
     const router: Router = Router();
     const jwtGeneratorAdapter: JwtGeneratorAdapter = new JwtGeneratorAdapter(
       totalEnvs

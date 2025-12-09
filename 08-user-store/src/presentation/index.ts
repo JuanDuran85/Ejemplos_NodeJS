@@ -1,10 +1,11 @@
 export { AuthController, AuthRoutes } from "./auth";
 export { CategoryController, CategoryRoutes } from "./category";
 export { FileUploadController, FileUploadRoutes } from "./file-upload";
+export { ImagesController, ImagesRoute } from "./images";
 export {
   AuthMiddleware,
   FileUploadMiddleware,
-  ValidateTypesMiddleware
+  ValidateTypesMiddleware,
 } from "./middlewares";
 export { ProductController, ProductRoutes } from "./products";
 export { AppRoutes } from "./routes";
@@ -16,6 +17,5 @@ export {
   EmailService,
   FileUploadService,
   ProductsService,
-  SenMailOptions
+  SenMailOptions,
 } from "./services";
-
