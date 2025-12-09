@@ -1,20 +1,18 @@
 import { Request, Response } from "express";
-import { FileUploadService } from "../services";
-import { FileArray, UploadedFile } from "express-fileupload";
+import { UploadedFile } from "express-fileupload";
 import { HandleError } from "../../domain";
+import { FileUploadService } from "../services";
 
 export class FileUploadController {
   constructor(private readonly fileUploadService: FileUploadService) {}
 
-  public uploadFile = async (req: Request, res: Response) => {
-    const files: FileArray | null | undefined = req.files;
-    if (!files || Object.keys(files).length === 0) {
-      return res.status(400).json({ msg: "No files were uploaded" });
-    }
-
-    const file = req.files?.file as UploadedFile;
+  public uploadFile: (req: Request, res: Response) => Promise<void> = async (
+    req: Request,
+    res: Response
+  ) => {
+    const file = req.body.files.at(0) as UploadedFile;
     this.fileUploadService
-      .uploadSingle(file)
+      .uploadSingle(file, `uploads/${req.body.type}`)
       .then((uploaded) => res.json(uploaded))
       .catch((error) => HandleError.handleError(error, res));
   };
