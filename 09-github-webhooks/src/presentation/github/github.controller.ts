@@ -5,7 +5,7 @@ export class GithubController {
   constructor(
     private readonly gitHubService: GitHubService,
     private readonly discordService: DiscordService
-  ) {}
+  ) { }
 
   public webhookHandler = (req: Request, res: Response) => {
     const githubEvent: string = req.header("x-github-event") ?? "unknown";
