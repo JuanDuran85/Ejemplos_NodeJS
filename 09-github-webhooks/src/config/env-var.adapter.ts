@@ -7,6 +7,7 @@ export class EnvVarAdapter {
         return {
             PORT: get("PORT").required().asPortNumber(),
             PUBLIC_PATH: get("PUBLIC_PATH").default("public").asString(),
+            DISCORD_WEBHOOK_URL: get("DISCORD_WEBHOOK_URL").required().asUrlString()
         }
     }
 }
