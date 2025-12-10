@@ -10,6 +10,7 @@ const { PORT, PUBLIC_PATH } = EnvVarAdapter.getEnvs();
 
 function main() {
     const app = express();
+    app.use(express.json());
     const githubController: GithubController = new GithubController();
     app.post("/api/github", githubController.webhookHandler);
 
