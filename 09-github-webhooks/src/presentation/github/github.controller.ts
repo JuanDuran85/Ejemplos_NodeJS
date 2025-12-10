@@ -9,7 +9,6 @@ export class GithubController {
 
   public webhookHandler = (req: Request, res: Response) => {
     const githubEvent: string = req.header("x-github-event") ?? "unknown";
-    const signature: string = req.header("x-hub-signature-256") ?? "unknown";
 
     if (!req.body) {
       req.body = {};

@@ -1,12 +1,8 @@
 import { NextFunction, Request, Response } from "express";
+import { EnvVarAdapter } from "../../config";
 
 export class GitHubSha256Middleware {
   private static readonly encoder: TextEncoder = new TextEncoder();
-  private readonly secret: string;
-
-  constructor(secret: string) {
-    this.secret = secret;
-  }
 
   public static async verifyGithubSignature(
     req: Request,
@@ -14,8 +10,8 @@ export class GitHubSha256Middleware {
     next: NextFunction
   ) {
     const xHubSignature: string = String(req.headers["x-hub-signature-256"]);
-    const body: string = JSON.stringify(req.body);
-    const secret: string = GitHubSha256Middleware.prototype.secret;
+    const body: string = JSON.stringify(req.body) || "";
+    const secret: string = EnvVarAdapter.getEnvs().SECRET_TOKEN;
     const isValid: boolean = await GitHubSha256Middleware.verifySignature(
       secret,
       xHubSignature,
@@ -35,14 +31,15 @@ export class GitHubSha256Middleware {
     payload: string
   ): Promise<boolean> {
     try {
-      let parts = header.split("=");
-      let sigHex = parts[1];
+      let parts: string[] = header.split("=");
+      let sigHex: string = parts[1];
 
       let algorithm = { name: "HMAC", hash: { name: "SHA-256" } };
 
-      let keyBytes = GitHubSha256Middleware.encoder.encode(secret);
+      let keyBytes: Uint8Array<ArrayBuffer> =
+        GitHubSha256Middleware.encoder.encode(secret);
       let extractable = false;
-      let key = await crypto.subtle.importKey(
+      let key: CryptoKey = await crypto.subtle.importKey(
         "raw",
         keyBytes,
         algorithm,
@@ -50,9 +47,10 @@ export class GitHubSha256Middleware {
         ["sign", "verify"]
       );
 
-      let sigBytes = GitHubSha256Middleware.hexToBytes(sigHex);
-      let dataBytes = GitHubSha256Middleware.encoder.encode(payload);
-      let equal = await crypto.subtle.verify(
+      let sigBytes: Uint8Array<ArrayBuffer> = this.hexToBytes(sigHex);
+      let dataBytes: Uint8Array<ArrayBuffer> =
+        GitHubSha256Middleware.encoder.encode(payload);
+      let equal: boolean = await crypto.subtle.verify(
         algorithm.name,
         key,
         sigBytes,
@@ -67,13 +65,13 @@ export class GitHubSha256Middleware {
   }
 
   private static hexToBytes(hex: string): Uint8Array<ArrayBuffer> {
-    let len = hex.length / 2;
-    let bytes = new Uint8Array(len);
+    let len: number = hex.length / 2;
+    let bytes: Uint8Array<ArrayBuffer> = new Uint8Array(len);
 
     let index = 0;
     for (let i = 0; i < hex.length; i += 2) {
-      let c = hex.slice(i, i + 2);
-      let b = Number.parseInt(c, 16);
+      let c: string = hex.slice(i, i + 2);
+      let b: number = Number.parseInt(c, 16);
       bytes[index] = b;
       index += 1;
     }
