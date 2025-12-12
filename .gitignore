@@ -166,3 +166,7 @@ postgres-test
 07-restweb/postgres/base
 07-restweb/generated/prisma
 07-restweb/prisma/migrations
+
+# Local Netlify folder
+.netlify
+10-serverless/deno.lock
