@@ -25,7 +25,7 @@ const wss: WebSocket.Server<typeof WebSocket, typeof IncomingMessage> =
 
 wss.on("connection", function connection(ws) {
   console.debug("Client connected");
-  ws.on("error...", console.error);
+  ws.on("error", console.error);
 
   ws.on("message", function message(data) {
     console.log("received from client: %s", data);
