@@ -8,7 +8,7 @@ interface Options {
 
 export class WssService {
   private static _instance: WssService;
-  private wss: WebSocketServer;
+  private readonly wss: WebSocketServer;
 
   private constructor(options: Options) {
     const { server, path = "/ws" } = options;
