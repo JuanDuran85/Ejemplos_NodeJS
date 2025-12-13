@@ -1,5 +1,11 @@
+import {
+  createServer,
+  IncomingMessage,
+  Server,
+  ServerResponse,
+} from "node:http";
 import { EnvVarAdapter } from "./config";
-import { AppRoutes, ServerApp } from "./presentation";
+import { AppRoutes, ServerApp, WssService } from "./presentation";
 
 (async () => {
   main();
@@ -13,5 +19,14 @@ async function main() {
     routes: AppRoutes.routes,
   });
 
-  server.start();
+  const httpServer: Server<typeof IncomingMessage, typeof ServerResponse> =
+    createServer(server.app);
+
+  WssService.initWss({
+    server: httpServer,
+  });
+
+  httpServer.listen(envs.PORT, () => {
+    console.log(`Server running on port ${envs.PORT}`);
+  });
 }

@@ -24,9 +24,10 @@ export class ServerApp {
     this.port = port;
     this.routes = routes;
     this.publicPath = public_path;
+    this.configurations();
   }
 
-  public async start() {
+  private configurations() {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(compression());
@@ -34,15 +35,17 @@ export class ServerApp {
     this.app.use(express.static(this.publicPath));
 
     this.app.use(this.routes);
-
-    this.app.get("/{*any}", (req, res) => {
+    // /{*any}
+    this.app.get(/^\/(?!api).*/, (req, res) => {
       const indexPath: string = path.join(
         __dirname,
         `../../${this.publicPath}/index.html`
       );
       res.sendFile(indexPath);
     });
+  }
 
+  public async start() {
     this.serverListener = this.app.listen(this.port, () => {
       console.debug(`Server running on port ${this.port}`);
     });
