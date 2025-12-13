@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Front WS</title>
+  </head>
+  <body>
+    <h1>Websockets - Status</h1>
+
+    <form>
+      <input type="text" name="sending" id="sen01" placeholder="Send Message" />
+      <button>Send</button>
+    </form>
+
+    <ul id="messages"></ul>
+
+    <script>
+      console.log("Message from Front");
+      const form = document.querySelector("form");
+      const input = document.getElementById("sen01");
+      const messagesElem = document.getElementById("messages");
+
+      function sendMessage(message) {
+        console.log(message);
+        if (message.length > 0) {
+          socket.send(message);
+        }
+      }
+
+      function renderMessage(message) {
+        const li = document.createElement("li");
+        li.innerHTML = message;
+        messagesElem.prepend(li);
+      }
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const message = input.value;
+        sendMessage(message);
+        input.value = "";
+      });
+
+      const socket = new WebSocket("ws://localhost:3000");
+      socket.onopen = (event) => {
+        console.log("Connection Opened");
+      };
+      socket.onclose = (event) => {
+        console.log("Disconnection");
+      };
+
+      socket.onmessage = (event) => {
+        const { payload } = JSON.parse(event.data);
+        renderMessage(payload);
+      };
+    </script>
+  </body>
+</html>
